@@ -6,14 +6,14 @@
 #    By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 20:34:46 by nmikuka           #+#    #+#              #
-#    Updated: 2025/07/04 12:11:27 by nmikuka          ###   ########.fr        #
+#    Updated: 2025/07/06 09:10:04 by nmikuka          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Compiler and flags
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-MLX = -lmlx -framework OpenGL -framework AppKit -L ./minilibx
+READLINE_LIB = -lreadline
 
 # Library name
 NAME = minishell
@@ -27,7 +27,7 @@ OBJS = $(SRCS:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(READLINE_LIB) -o $(NAME)
 	@echo "\nMinishell is ready to go!"
 
 %.o : %.c
