@@ -6,7 +6,7 @@
 #    By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 20:34:46 by nmikuka           #+#    #+#              #
-#    Updated: 2025/07/06 09:10:04 by nmikuka          ###   ########.fr        #
+#    Updated: 2025/07/06 13:47:16 by nmikuka          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ READLINE_LIB = -lreadline
 NAME = minishell
 
 # Source and object files
-SRCS = main.c \
+SRCS = main.c ft_split.c libft_utils.c \
 		get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
 
 OBJS = $(SRCS:.c=.o)
