@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 12:02:33 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/06 19:42:58 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/06 20:09:56 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,15 @@ int	parse(char *cmd, char *envp[])
 	char	**split;
 	int i;
 
-	// printf("Parsing %s \n", cmd);
+	// printf("Parsing ...%s...\n", cmd);
+	if (!cmd)
+		return (1);
 	split = ft_split(cmd, ' ');
+	if (!split || !split[0])
+	{
+		free_split(split);
+		return (1);
+	}
 	if (ft_strncmp(split[0], "cd", 2) == 0)
 	{
 		chdir(split[1]);
