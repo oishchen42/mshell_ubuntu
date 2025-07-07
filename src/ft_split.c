@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 20:02:19 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/07 11:53:10 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/07 23:47:48 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include "get_next_line/get_next_line.h"
+#include "../get_next_line/get_next_line.h"
 
 static char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
