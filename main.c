@@ -6,13 +6,15 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 12:02:33 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/07 09:18:20 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/07 17:25:22 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static char	*get_promt(void);
+static int	parse(char *cmd, char *envp[]);
+static char	*get_curr_dir(void);
 
 int	main(int argc, char *argv[], char *envp[])
 {
@@ -37,27 +39,49 @@ int	main(int argc, char *argv[], char *envp[])
 
 static char	*get_promt(void)
 {
-	char	*cwd;
+	char	*curr_dir;
 	char	*promt_start;
 	char	*promt_end;
 
-	cwd = getcwd(NULL, 0);
-	if (!cwd)
+	curr_dir = get_curr_dir();
+	if (!curr_dir)
 		return (ft_strjoin("minishell> ", ""));
-	promt_start = ft_strjoin("minishell ", cwd);
-	free(cwd);
+	promt_start = ft_strjoin("minishell ", curr_dir);
+	free(curr_dir);
 	if (!promt_start)
 		return (ft_strjoin("minishell> ", ""));
 	promt_end = ft_strjoin(promt_start, "> ");
+	free(promt_start);
 	if (!promt_end)
 		return (ft_strjoin("minishell> ", ""));
 	return (promt_end);
 }
 
-int	parse(char *cmd, char *envp[])
+static char	*get_curr_dir(void)
 {
+	char	*cwd;
+	char	*curr_dir;
 	char	**split;
 	int		i;
+
+	cwd = getcwd(NULL, 0);
+	if (!cwd)
+		return (NULL);
+	split = ft_split(cwd, '/');
+	free(cwd);
+	if (!split || !split[0])
+		return (NULL);
+	i = 0;
+	while (split[i])
+		i++;
+	curr_dir = ft_strjoin(split[i - 1], "");
+	free_split(split);
+	return (curr_dir);
+}
+
+static int	parse(char *cmd, char *envp[])
+{
+	char	**split;
 
 	// printf("Parsing ...%s...\n", cmd);
 	if (!cmd)
@@ -69,46 +93,13 @@ int	parse(char *cmd, char *envp[])
 		return (1);
 	}
 	if (ft_strncmp(split[0], "cd", 2) == 0)
-	{
-		chdir(split[1]);
-	}
+		minishell_cd(split);
 	else if (ft_strncmp(split[0], "pwd", 3) == 0)
-	{
 		minishell_pwd();
-	}
 	else if (ft_strncmp(split[0], "env", 3) == 0)
-	{
-		i = 0;
-		while (envp[i])
-		{
-			printf("%s\n", envp[i]);
-			i++;
-		}
-	}
+		print_arr(envp);
 	else if (ft_strncmp(split[0], "echo", 4) == 0)
-	{
-		i = 1;
-		while (split[i])
-		{
-			printf("%s ", split[i]);
-			i++;
-		}
-		printf("\n");
-	}
+		minishell_echo(split);
 	free_split(split);
 	return (1);
-}
-
-void	minishell_pwd(void)
-{
-	char	*cwd;
-
-	cwd = getcwd(NULL, 0);
-	if (!cwd)
-	{
-		perror("pwd");
-		return ;
-	}
-	printf("%s\n", cwd);
-	free(cwd);
 }

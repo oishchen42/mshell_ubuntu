@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 13:34:42 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/07 09:19:31 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/07 16:59:15 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,11 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-int		parse(char *cmd, char *envp[]);
 void	minishell_pwd(void);
+void	minishell_cd(char **split);
+int		minishell_echo(char **split);
+
+void	print_arr(char *arr[]);
 
 // libft functions
 int		ft_strncmp(const char *s1, const char *s2, int n);
