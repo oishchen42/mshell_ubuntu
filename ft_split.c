@@ -6,14 +6,14 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 20:02:19 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/06/29 21:15:25 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/07 11:53:10 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "get_next_line/get_next_line.h"
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+static char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	char	*res;
 
@@ -24,7 +24,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	return (res);
 }
 
-int	count_splits(char const *s, char c)
+static int	count_splits(char const *s, char c)
 {
 	int		n_splits;
 	int		i;
@@ -44,7 +44,7 @@ int	count_splits(char const *s, char c)
 	return (n_splits);
 }
 
-int	find_next_split(char const *s, char c)
+static int	find_next_split(char const *s, char c)
 {
 	int	length;
 
