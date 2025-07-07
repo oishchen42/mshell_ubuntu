@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 18:19:33 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/05/24 18:04:09 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/07 09:20:09 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <unistd.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE (1 << 8)
+#  define BUFFER_SIZE 256
 # elif BUFFER_SIZE < 0
 #  undef BUFFER_SIZE
 #  define BUFFER_SIZE 0

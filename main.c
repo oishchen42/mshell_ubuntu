@@ -6,32 +6,58 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 12:02:33 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/06 20:09:56 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/07 09:18:20 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static char	*get_promt(void);
+
 int	main(int argc, char *argv[], char *envp[])
 {
 	char	*cmd;
+	char	*promt;
 
 	(void) argc;
 	(void) argv;
 	(void) envp;
 	while (1)
 	{
-		cmd = readline("minishell> ");
+		promt = get_promt();
+		cmd = readline(promt);
+		if (promt)
+			free(promt);
 		parse(cmd, envp);
-		free(cmd);
+		if (cmd)
+			free(cmd);
 	}
 	return (0);
+}
+
+static char	*get_promt(void)
+{
+	char	*cwd;
+	char	*promt_start;
+	char	*promt_end;
+
+	cwd = getcwd(NULL, 0);
+	if (!cwd)
+		return (ft_strjoin("minishell> ", ""));
+	promt_start = ft_strjoin("minishell ", cwd);
+	free(cwd);
+	if (!promt_start)
+		return (ft_strjoin("minishell> ", ""));
+	promt_end = ft_strjoin(promt_start, "> ");
+	if (!promt_end)
+		return (ft_strjoin("minishell> ", ""));
+	return (promt_end);
 }
 
 int	parse(char *cmd, char *envp[])
 {
 	char	**split;
-	int i;
+	int		i;
 
 	// printf("Parsing ...%s...\n", cmd);
 	if (!cmd)
@@ -53,7 +79,7 @@ int	parse(char *cmd, char *envp[])
 	else if (ft_strncmp(split[0], "env", 3) == 0)
 	{
 		i = 0;
-		while(envp[i])
+		while (envp[i])
 		{
 			printf("%s\n", envp[i]);
 			i++;
@@ -62,7 +88,7 @@ int	parse(char *cmd, char *envp[])
 	else if (ft_strncmp(split[0], "echo", 4) == 0)
 	{
 		i = 1;
-		while(split[i])
+		while (split[i])
 		{
 			printf("%s ", split[i]);
 			i++;
@@ -73,14 +99,15 @@ int	parse(char *cmd, char *envp[])
 	return (1);
 }
 
-void minishell_pwd(void)
+void	minishell_pwd(void)
 {
-	char *cwd = getcwd(NULL, 0);
+	char	*cwd;
 
+	cwd = getcwd(NULL, 0);
 	if (!cwd)
 	{
 		perror("pwd");
-		return;
+		return ;
 	}
 	printf("%s\n", cwd);
 	free(cwd);
