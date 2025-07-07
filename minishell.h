@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 13:34:42 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/06 19:38:02 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/07 09:19:31 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,6 @@ void	minishell_pwd(void);
 int		ft_strncmp(const char *s1, const char *s2, int n);
 char	**ft_split(char const *s, char c);
 void	free_split(char	**split);
+char	*ft_strjoin(char const *s1, char const *s2);
 
 #endif
