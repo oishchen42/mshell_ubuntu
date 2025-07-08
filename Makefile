@@ -3,30 +3,29 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+         #
+#    By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 20:34:46 by nmikuka           #+#    #+#              #
-#    Updated: 2025/07/07 23:37:58 by oishchen         ###   ########.fr        #
+#    Updated: 2025/07/08 11:49:21 by nmikuka          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-# Compiler and flags
-CC = cc
-CFLAGS = -Wall -Wextra -Werror -$(INCLUDES)
-CFLAGS_GNL = -Wall -Wextra -Werror -I$(GNL_DIR)
-READLINE_LIB = -lreadline
-
-#Directories name
+# Directories
 SRC_DIR := src
 OBJ_DIR := obj
 GNL_DIR := get_next_line
-INCLUDES := Iinclude
+INCLUDES := include
+
+# Compiler and flags
+CC := cc
+CFLAGS := -Wall -Wextra -Werror -I$(INCLUDES)
+READLINE_LIB := -lreadline
 
 # Library name
 NAME := minishell
 
 # Source and object files
-SRC_FILES := main.c ft_split.c ft_strjoin.c libft_utils.c
+SRC_FILES := main.c ft_split.c ft_strjoin.c libft_utils.c run_cmd.c
 GNL_FILES := get_next_line.c get_next_line_utils.c
 
 # Structure of SRC and OBJ
@@ -46,7 +45,7 @@ $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 $(GNL_DIR)/%.o : $(GNL_DIR)/%.c
-	$(CC) $(CFLAGS_GNL) -c -o $@ $<
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
 	rm -rf $(OBJ_DIR)
