@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+         #
+#    By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 20:34:46 by nmikuka           #+#    #+#              #
-#    Updated: 2025/07/07 23:37:58 by oishchen         ###   ########.fr        #
+#    Updated: 2025/07/08 08:21:41 by nmikuka          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ INCLUDES := Iinclude
 NAME := minishell
 
 # Source and object files
-SRC_FILES := main.c ft_split.c ft_strjoin.c libft_utils.c
+SRC_FILES := main.c ft_split.c ft_strjoin.c libft_utils.c run_cmd.c
 GNL_FILES := get_next_line.c get_next_line_utils.c
 
 # Structure of SRC and OBJ
