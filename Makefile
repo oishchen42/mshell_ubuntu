@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+         #
+#    By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 20:34:46 by nmikuka           #+#    #+#              #
-#    Updated: 2025/07/11 17:01:14 by nmikuka          ###   ########.fr        #
+#    Updated: 2025/07/11 19:18:16 by oishchen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ INCLUDES := include
 
 # Compiler and flags
 CC := cc
-CFLAGS := -Wall -Wextra -Werror -I$(INCLUDES)
+CFLAGS := -Wall -Wextra -Werror -I$(INCLUDES) -I$(LIBFT_DIR)
 READLINE_LIB := -lreadline
 LIBFT = $(LIBFT_DIR)/libft.a
 
@@ -27,7 +27,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 NAME := minishell
 
 # Source and object files
-SRC_FILES := main.c ft_split.c ft_strjoin.c libft_utils.c run_cmd.c
+SRC_FILES := main.c run_cmd.c clean_utils.c export_utils.c
 GNL_FILES := get_next_line.c get_next_line_utils.c
 
 # Structure of SRC and OBJ

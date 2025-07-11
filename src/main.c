@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 12:02:33 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/07 17:25:22 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/11 19:20:56 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ static int	parse(char *cmd, char *envp[])
 		print_arr(envp);
 	else if (ft_strncmp(split[0], "echo", 4) == 0)
 		minishell_echo(split);
+	else if (ft_strncmp(split[0], "export", 7) == 0)
+		minishell_export(split, envp);
 	free_split(split);
 	return (1);
 }
