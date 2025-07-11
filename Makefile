@@ -6,13 +6,14 @@
 #    By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 20:34:46 by nmikuka           #+#    #+#              #
-#    Updated: 2025/07/08 11:49:21 by nmikuka          ###   ########.fr        #
+#    Updated: 2025/07/11 17:01:14 by nmikuka          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Directories
 SRC_DIR := src
 OBJ_DIR := obj
+LIBFT_DIR := libft
 GNL_DIR := get_next_line
 INCLUDES := include
 
@@ -20,6 +21,7 @@ INCLUDES := include
 CC := cc
 CFLAGS := -Wall -Wextra -Werror -I$(INCLUDES)
 READLINE_LIB := -lreadline
+LIBFT = $(LIBFT_DIR)/libft.a
 
 # Library name
 NAME := minishell
@@ -34,10 +36,15 @@ GNL_SRC = $(addprefix $(GNL_DIR)/, $(GNL_FILES))
 OBJ = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 GNL_OBJ = $(addprefix $(GNL_DIR)/, $(GNL_FILES:.c=.o))
 
-all: $(NAME)
+# Build libft.a
+$(LIBFT):
+	@echo "Building libft..."
+	@$(MAKE) -C $(LIBFT_DIR)
+
+all: $(LIBFT) $(NAME)
 
 $(NAME): $(OBJ) $(GNL_OBJ)
-	$(CC) $(CFLAGS) $(OBJ) $(GNL_OBJ) $(READLINE_LIB) -o $@
+	$(CC) $(CFLAGS) $(OBJ) $(GNL_OBJ) $(READLINE_LIB) $(LIBFT) -o $@
 	@echo "\nMinishell is ready to go!"
 
 $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c
@@ -47,11 +54,14 @@ $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c
 $(GNL_DIR)/%.o : $(GNL_DIR)/%.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
+
 clean:
+	@$(MAKE) -C $(LIBFT_DIR) clean
 	rm -rf $(OBJ_DIR)
 	rm -f  $(GNL_OBJ)
 
 fclean: clean
+	@$(MAKE) -C $(LIBFT_DIR) fclean
 	rm -f $(NAME)
 
 re: fclean all
