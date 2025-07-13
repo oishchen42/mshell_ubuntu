@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+         #
+#    By: oishchen <oishchen@student.42heilbronn.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 20:34:46 by nmikuka           #+#    #+#              #
-#    Updated: 2025/07/11 19:18:16 by oishchen         ###   ########.fr        #
+#    Updated: 2025/07/13 23:42:24 by oishchen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 NAME := minishell
 
 # Source and object files
-SRC_FILES := main.c run_cmd.c clean_utils.c export_utils.c
+SRC_FILES := main.c run_cmd.c clean_utils.c export_utils.c general_utils.c
 GNL_FILES := get_next_line.c get_next_line_utils.c
 
 # Structure of SRC and OBJ

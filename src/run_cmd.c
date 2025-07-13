@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: oishchen <oishchen@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 17:24:02 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/07 17:24:20 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/13 23:41:05 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,14 @@ int	minishell_echo(char **split)
 	return (1);
 }
 
-void	print_arr(char *arr[])
+void	print_arr(t_mshell_data *data)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
-	while (arr[i])
+	while (i < data->env_len)
 	{
-		printf("%s\n", arr[i]);
+		printf("%s\n", data->env[i]);
 		i++;
 	}
 }

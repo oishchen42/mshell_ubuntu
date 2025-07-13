@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: oishchen <oishchen@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 20:07:22 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/03/07 20:14:10 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/13 22:09:35 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
