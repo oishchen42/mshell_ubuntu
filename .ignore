@@ -1,2 +1,2 @@
-readline.supp
-.ignore
+./readline.supp
+*.ignore
