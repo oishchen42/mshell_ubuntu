@@ -27,7 +27,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 NAME := minishell
 
 # Source and object files
-SRC_FILES := main.c run_cmd.c clean_utils.c export_utils.c \
+SRC_FILES := main.c run_cmd.c clean_utils.c export_utils.c general_utils.c \
 			pipex.c ft_split_cmd.c fork_utils.c pipex_utils.c
 GNL_FILES := get_next_line.c get_next_line_utils.c
 

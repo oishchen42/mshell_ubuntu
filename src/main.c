@@ -13,7 +13,7 @@
 #include "minishell.h"
 
 static char	*get_promt(void);
-// static int	parse(char *cmd, char *envp[]);
+// static int	parse(char *cmd, t_mshell_data *data);
 static char	*get_curr_dir(void);
 
 int	main(int argc, char *argv[], char *envp[])
@@ -22,10 +22,13 @@ int	main(int argc, char *argv[], char *envp[])
 	char	*promt;
 	t_pipex	*pipex_struct;
 	int		status;
+	t_mshell_data	data;
 
 	(void) argc;
 	(void) argv;
 	(void) envp;
+	if (init_data_env(&data, envp) == EXIT_SUCCESS)
+		return (EXIT_FAILURE);
 	while (1)
 	{
 		promt = get_promt();
@@ -87,9 +90,9 @@ static char	*get_curr_dir(void)
 	return (curr_dir);
 }
 
-int	parse(char *cmd, char *envp[])
+int	parse(char *cmd, t_mshell_data *data)
 {
-	char	**split;
+	char			**split;
 
 	// printf("Parsing ...%s...\n", cmd);
 	if (!cmd)
@@ -105,11 +108,13 @@ int	parse(char *cmd, char *envp[])
 	else if (ft_strncmp(split[0], "pwd", 3) == 0)
 		minishell_pwd();
 	else if (ft_strncmp(split[0], "env", 3) == 0)
-		print_arr(envp);
+		print_arr(data->env);
 	else if (ft_strncmp(split[0], "echo", 4) == 0)
 		minishell_echo(split);
 	else if (ft_strncmp(split[0], "export", 7) == 0)
-		minishell_export(split, envp);
+		minishell_export(split, data);
+	if (!data->status)
+		free_split(data->env);
 	free_split(split);
 	return (1);
 }
