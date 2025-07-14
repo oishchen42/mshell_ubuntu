@@ -3,23 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oishchen <oishchen@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 12:02:33 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/14 17:25:14 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/07/14 00:09:27 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static char	*get_promt(void);
-static int	parse(char *cmd, t_mshell_data *data);
+// static int	parse(char *cmd, t_mshell_data *data);
 static char	*get_curr_dir(void);
 
 int	main(int argc, char *argv[], char *envp[])
 {
-	char			*cmd;
-	char			*promt;
+	char	*cmd;
+	char	*promt;
+	t_pipex	*pipex_struct;
+	int		status;
 	t_mshell_data	data;
 
 	(void) argc;
@@ -33,15 +35,16 @@ int	main(int argc, char *argv[], char *envp[])
 		cmd = readline(promt);
 		if (promt)
 			free(promt);
-		parse(cmd, &data);
+		pipex_struct = init_pipex(cmd, envp);
+		if (!pipex_struct)
+			return (EXIT_FAILURE);
+		status = run_pipex(pipex_struct);
+		free_pipex(pipex_struct);
 		if (cmd)
 			free(cmd);
-		if (!data.status)
-		{
-			free_split(data.env);
-			break ;
-		}
-	}
+	}	
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
 	return (0);
 }
 
@@ -87,7 +90,7 @@ static char	*get_curr_dir(void)
 	return (curr_dir);
 }
 
-static int	parse(char *cmd, t_mshell_data *data)
+int	parse(char *cmd, t_mshell_data *data)
 {
 	char			**split;
 

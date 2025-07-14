@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oishchen <oishchen@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 13:34:42 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/14 17:54:43 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/07/13 22:04:06 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "libft.h"
+# include "pipex.h"
 
 typedef struct s_mshell_data
 {
@@ -63,6 +64,6 @@ int	init_data_env(t_mshell_data *data, char **envp);
 
 //clean functions
 void			free_split(char	**split);
-
+void	free_pipex(t_pipex	*pipex);
 
 #endif
