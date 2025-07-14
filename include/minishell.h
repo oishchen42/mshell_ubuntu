@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 13:34:42 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/13 23:35:36 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/07/14 17:54:43 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,6 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "libft.h"
-
-# define SUCCESS 0
-# define FAIL 1
 
 typedef struct s_mshell_data
 {
@@ -36,7 +33,7 @@ int				minishell_echo(char **split);
 int				minishell_export(char **split, t_mshell_data *data);
 
 // cmd exe functions
-void			print_arr(t_mshell_data *data);
+void	print_arr(char *arr[]);
 
 // general_utils
 

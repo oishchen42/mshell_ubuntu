@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 17:24:02 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/13 23:41:05 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/07/14 17:20:33 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,14 @@ int	minishell_echo(char **split)
 	return (1);
 }
 
-void	print_arr(t_mshell_data *data)
+void	print_arr(char *arr[])
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
-	while (i < data->env_len)
+	while (arr[i])
 	{
-		printf("%s\n", data->env[i]);
+		printf("%s\n", arr[i]);
 		i++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 16:45:55 by oishchen          #+#    #+#             */
-/*   Updated: 2025/07/14 16:17:35 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/07/14 17:54:54 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ int	minishell_export(char **split, t_mshell_data *data)
 			if (!add_new_env(split[i], temp, data))
 			{
 				data->status = 0;
-				return (ft_putendl_fd("ERROR: split_key_value is aborted", 2), FAIL);
+				return (ft_putendl_fd("ERROR: split_key_value is aborted", 2), EXIT_FAILURE);
 			}
 			else
 			{
