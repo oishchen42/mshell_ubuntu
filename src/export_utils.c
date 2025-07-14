@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 16:45:55 by oishchen          #+#    #+#             */
-/*   Updated: 2025/07/13 23:42:01 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/07/14 16:17:35 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,6 @@ int	minishell_export(char **split, t_mshell_data *data)
 	int		i;
 	char	**temp;
 
-	temp = ft_split(split[3], '=');
 	temp = malloc(sizeof(char *) * 3);
 	i = 1;
 	printf("WE ARE HER\n");
