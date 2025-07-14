@@ -3,36 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oishchen <oishchen@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 12:02:33 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/11 19:20:56 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/07/14 17:25:14 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static char	*get_promt(void);
-static int	parse(char *cmd, char *envp[]);
+static int	parse(char *cmd, t_mshell_data *data);
 static char	*get_curr_dir(void);
 
 int	main(int argc, char *argv[], char *envp[])
 {
-	char	*cmd;
-	char	*promt;
+	char			*cmd;
+	char			*promt;
+	t_mshell_data	data;
 
 	(void) argc;
 	(void) argv;
 	(void) envp;
+	if (init_data_env(&data, envp) == EXIT_SUCCESS)
+		return (EXIT_FAILURE);
 	while (1)
 	{
 		promt = get_promt();
 		cmd = readline(promt);
 		if (promt)
 			free(promt);
-		parse(cmd, envp);
+		parse(cmd, &data);
 		if (cmd)
 			free(cmd);
+		if (!data.status)
+		{
+			free_split(data.env);
+			break ;
+		}
 	}
 	return (0);
 }
@@ -79,9 +87,9 @@ static char	*get_curr_dir(void)
 	return (curr_dir);
 }
 
-static int	parse(char *cmd, char *envp[])
+static int	parse(char *cmd, t_mshell_data *data)
 {
-	char	**split;
+	char			**split;
 
 	// printf("Parsing ...%s...\n", cmd);
 	if (!cmd)
@@ -97,11 +105,13 @@ static int	parse(char *cmd, char *envp[])
 	else if (ft_strncmp(split[0], "pwd", 3) == 0)
 		minishell_pwd();
 	else if (ft_strncmp(split[0], "env", 3) == 0)
-		print_arr(envp);
+		print_arr(data->env);
 	else if (ft_strncmp(split[0], "echo", 4) == 0)
 		minishell_echo(split);
 	else if (ft_strncmp(split[0], "export", 7) == 0)
-		minishell_export(split, envp);
+		minishell_export(split, data);
+	if (!data->status)
+		free_split(data->env);
 	free_split(split);
 	return (1);
 }
