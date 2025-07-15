@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 12:02:33 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/14 00:09:27 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/15 09:32:08 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,30 +18,35 @@ static char	*get_curr_dir(void);
 
 int	main(int argc, char *argv[], char *envp[])
 {
-	char	*cmd;
-	char	*promt;
-	t_pipex	*pipex_struct;
-	int		status;
+	char			*cmd;
+	char			*promt;
+	int				status;
 	t_mshell_data	data;
 
 	(void) argc;
 	(void) argv;
 	(void) envp;
-	if (init_data_env(&data, envp) == EXIT_SUCCESS)
+	if (init_data_env(&data, envp) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
+	printf("here");
 	while (1)
 	{
 		promt = get_promt();
 		cmd = readline(promt);
 		if (promt)
 			free(promt);
-		pipex_struct = init_pipex(cmd, envp);
-		if (!pipex_struct)
-			return (EXIT_FAILURE);
-		status = run_pipex(pipex_struct);
-		free_pipex(pipex_struct);
+		data.pipex = init_pipex(cmd, envp);
 		if (cmd)
 			free(cmd);
+		if (!data.pipex)
+			break ;
+		status = run_pipex(data.pipex);
+		free_pipex(data.pipex);
+		if (!data.status)
+		{
+			free_split(data.env);
+			break ;
+		}
 	}	
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));

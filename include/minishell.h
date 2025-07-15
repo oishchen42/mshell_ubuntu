@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 13:34:42 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/13 22:04:06 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/15 09:18:29 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 
 typedef struct s_mshell_data
 {
+	t_pipex	*pipex;
 	char	**env;
 	size_t	env_len;
 	int		status;
