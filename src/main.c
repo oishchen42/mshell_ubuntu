@@ -6,14 +6,13 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 12:02:33 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/15 09:32:08 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/15 21:31:58 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static char	*get_promt(void);
-// static int	parse(char *cmd, t_mshell_data *data);
 static char	*get_curr_dir(void);
 
 int	main(int argc, char *argv[], char *envp[])
@@ -95,18 +94,18 @@ static char	*get_curr_dir(void)
 	return (curr_dir);
 }
 
-int	parse(char *cmd, t_mshell_data *data)
+int	parse_builtin(char *cmd, t_mshell_data *data)
 {
 	char			**split;
 
 	// printf("Parsing ...%s...\n", cmd);
 	if (!cmd)
-		return (1);
+		return (FAIL);
 	split = ft_split(cmd, ' ');
 	if (!split || !split[0])
 	{
 		free_split(split);
-		return (1);
+		return (FAIL);
 	}
 	if (ft_strncmp(split[0], "cd", 2) == 0)
 		minishell_cd(split);
@@ -118,8 +117,13 @@ int	parse(char *cmd, t_mshell_data *data)
 		minishell_echo(split);
 	else if (ft_strncmp(split[0], "export", 7) == 0)
 		minishell_export(split, data);
+	else
+	{
+		free_split(data->env);
+		return (CMD_NOT_FOUND);
+	}
 	if (!data->status)
 		free_split(data->env);
 	free_split(split);
-	return (1);
+	return (SUCCESS);
 }
