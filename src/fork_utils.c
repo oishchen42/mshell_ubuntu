@@ -6,24 +6,24 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:42:03 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/14 00:14:41 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/16 00:28:19 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <fcntl.h>
 
-int	run_pipex(t_pipex *pipex_struct)
+int	run_pipex(t_mshell_data *mshell_struct)
 {
 	int		pipes[2][2];
 	pid_t	*pids;
 	int		i;
 
-	if (!pipex_struct->n_cmds)
+	if (!mshell_struct->pipex->n_cmds)
 		return (EXIT_SUCCESS);
-	pids = malloc(sizeof(pid_t) * (pipex_struct->n_cmds));
+	pids = malloc(sizeof(pid_t) * (mshell_struct->pipex->n_cmds));
 	i = 0;
-	while (i < pipex_struct->n_cmds)
+	while (i < mshell_struct->pipex->n_cmds)
 	{
 		if (pipe(pipes[1]) == -1)
 			return (EPIPE);
@@ -31,7 +31,7 @@ int	run_pipex(t_pipex *pipex_struct)
 		if (pids[i] < 0)
 			return (ECHILD);
 		if (pids[i] == 0)
-			run_fork(i, pipex_struct, pipes);
+			run_fork(i, mshell_struct, pipes);
 		if (i != 0)
 			close_pipe(pipes[0]);
 		pipes[0][READ_END] = pipes[1][READ_END];
@@ -40,71 +40,72 @@ int	run_pipex(t_pipex *pipex_struct)
 	}
 	close_pipe(pipes[0]);
 	close_pipe(pipes[1]);
-	return (wait_for_child_procs(pids, pipex_struct->n_cmds));
+	return (wait_for_child_procs(pids, mshell_struct->pipex->n_cmds));
 }
 
-void	run_fork(int i, t_pipex *pipex_struct, int pipes[2][2])
+void	run_fork(int i, t_mshell_data *mshell_struct, int pipes[2][2])
 {
 	int	curr_fd[2];
 
-	if (pipex_struct->n_cmds == 1)
+	if (mshell_struct->pipex->n_cmds == 1)
 		pipes[1][WRITE_END] = -1;
 	if (i == 0)
-		run_first_cmd(pipex_struct, pipes[1]);
-	else if (i < (pipex_struct->n_cmds - 1))
+		run_first_cmd(mshell_struct, pipes[1]);
+	else if (i < (mshell_struct->pipex->n_cmds - 1))
 	{
 		close(pipes[0][WRITE_END]);
 		close(pipes[1][READ_END]);
 		curr_fd[READ_END] = pipes[0][READ_END];
 		curr_fd[WRITE_END] = pipes[1][WRITE_END];
-		run_cmd(pipex_struct->cmds[i], pipex_struct->envp, curr_fd);
+		run_cmd(mshell_struct->pipex->cmds[i], mshell_struct, curr_fd);
 	}
 	else
-		run_last_cmd(pipex_struct, pipes[0]);
+		run_last_cmd(mshell_struct, pipes[0]);
 }
 
-void	run_first_cmd(t_pipex *pipex_struct, int pipe[2])
+void	run_first_cmd(t_mshell_data *mshell_struct, int pipe[2])
 {
 	close(pipe[READ_END]);
-	if (pipex_struct->infile)
+	if (mshell_struct->pipex->infile)
 	{
-		pipe[READ_END] = open(pipex_struct->infile, O_RDONLY);
+		pipe[READ_END] = open(mshell_struct->pipex->infile, O_RDONLY);
 		if (pipe[READ_END] < 0)
-			exit_with_error(strerror(errno), pipex_struct->infile, errno);
+			exit_with_error(strerror(errno), mshell_struct->pipex->infile, errno);
 	}
 	else
 		pipe[READ_END] = -1;
-	run_cmd(pipex_struct->cmds[0], pipex_struct->envp, pipe);
+	run_cmd(mshell_struct->pipex->cmds[0], mshell_struct, pipe);
 }
 
-void	run_last_cmd(t_pipex *pipex_struct, int pipe[2])
+void	run_last_cmd(t_mshell_data *mshell_struct, int pipe[2])
 {
 	int	flags;
 
 	close(pipe[WRITE_END]);
-	if (pipex_struct->outfile)
+	if (mshell_struct->pipex->outfile)
 	{
-		if (access(pipex_struct->outfile, F_OK) == 0
-			&& access(pipex_struct->outfile, W_OK) == -1)
-			exit_with_error(strerror(errno), pipex_struct->outfile, 1);
+		if (access(mshell_struct->pipex->outfile, F_OK) == 0
+			&& access(mshell_struct->pipex->outfile, W_OK) == -1)
+			exit_with_error(strerror(errno), mshell_struct->pipex->outfile, 1);
 		flags = O_WRONLY | O_CREAT | O_TRUNC;
-		if (pipex_struct->is_heredoc)
+		if (mshell_struct->pipex->is_heredoc)
 			flags = O_WRONLY | O_CREAT | O_APPEND;
-		pipe[WRITE_END] = open(pipex_struct->outfile, flags, 0644);
+		pipe[WRITE_END] = open(mshell_struct->pipex->outfile, flags, 0644);
 		if (pipe[WRITE_END] < 0)
-			exit_with_error(strerror(errno), pipex_struct->outfile, errno);
+			exit_with_error(strerror(errno), mshell_struct->pipex->outfile, errno);
 	}
 	else
 		pipe[WRITE_END] = -1;
-	run_cmd(pipex_struct->cmds[pipex_struct->n_cmds - 1], pipex_struct->envp,
+	run_cmd(mshell_struct->pipex->cmds[mshell_struct->pipex->n_cmds - 1], mshell_struct,
 		pipe);
 }
 
-void	run_cmd(char *argv, char *envp[], int fd[])
+void	run_cmd(char *argv, t_mshell_data *mshell_struct, int fd[])
 {
 	char	*cmd;
 	char	**args;
 	int		err_code;
+	int		builtin_status;
 
 	if (fd[READ_END] != -1)
 	{
@@ -116,8 +117,11 @@ void	run_cmd(char *argv, char *envp[], int fd[])
 		dup2(fd[WRITE_END], STDOUT_FILENO);
 		close(fd[WRITE_END]);
 	}
+	builtin_status = parse_builtin(argv, mshell_struct);
+	if (builtin_status != CMD_NOT_FOUND)
+		exit(builtin_status);
 	args = ft_split_cmd(argv, ' ');
-	cmd = get_exec_cmd(args[0], envp, &err_code);
+	cmd = get_exec_cmd(args[0], mshell_struct->env, &err_code);
 	if (cmd && (access(cmd, F_OK) == 0) && (access(cmd, X_OK) == -1))
 	{
 		free(cmd);
@@ -127,7 +131,7 @@ void	run_cmd(char *argv, char *envp[], int fd[])
 		exit_with_error_and_free(strerror(errno), args, 127);
 	if (cmd == NULL)
 		exit_with_error_and_free("command not found", args, 127);
-	execve(cmd, args, envp);
+	execve(cmd, args, mshell_struct->env);
 	free(cmd);
 	free_split(args);
 	exit_with_error("execve error", NULL, 127);

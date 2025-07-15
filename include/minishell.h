@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 13:34:42 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/15 19:10:00 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/15 23:51:15 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,6 @@
 # define FAIL 1
 # define SUCCESS 0
 # define CMD_NOT_FOUND -1
-
-typedef struct s_mshell_data
-{
-	t_pipex	*pipex;
-	char	**env;
-	size_t	env_len;
-	int		status;
-}	t_mshell_data;
 
 int				parse_builtin(char *cmd, t_mshell_data *data);
 void			minishell_pwd(void);

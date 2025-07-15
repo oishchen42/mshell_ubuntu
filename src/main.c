@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 12:02:33 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/15 21:31:58 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/16 00:25:54 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int	main(int argc, char *argv[], char *envp[])
 	(void) envp;
 	if (init_data_env(&data, envp) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	printf("here");
 	while (1)
 	{
 		promt = get_promt();
@@ -39,7 +38,7 @@ int	main(int argc, char *argv[], char *envp[])
 			free(cmd);
 		if (!data.pipex)
 			break ;
-		status = run_pipex(data.pipex);
+		status = run_pipex(&data);
 		free_pipex(data.pipex);
 		if (!data.status)
 		{
@@ -119,7 +118,7 @@ int	parse_builtin(char *cmd, t_mshell_data *data)
 		minishell_export(split, data);
 	else
 	{
-		free_split(data->env);
+		// free_split(data->env);
 		return (CMD_NOT_FOUND);
 	}
 	if (!data->status)
