@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 13:34:42 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/15 23:51:15 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/16 09:32:45 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int				minishell_export(char **split, t_mshell_data *data);
 
 // cmd exe functions
 void	print_arr(char *arr[]);
+void	print_env(t_mshell_data *data);
 
 // general_utils
 

@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 12:02:33 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/16 00:25:54 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/16 09:31:28 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ int	parse_builtin(char *cmd, t_mshell_data *data)
 	else if (ft_strncmp(split[0], "pwd", 3) == 0)
 		minishell_pwd();
 	else if (ft_strncmp(split[0], "env", 3) == 0)
-		print_arr(data->env);
+		print_env(data);
 	else if (ft_strncmp(split[0], "echo", 4) == 0)
 		minishell_echo(split);
 	else if (ft_strncmp(split[0], "export", 7) == 0)
