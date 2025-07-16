@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 12:02:33 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/16 14:05:35 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/16 16:55:08 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,11 @@ int	main(int argc, char *argv[], char *envp[])
 			free(promt);
 		data.pipex = init_pipex(cmd, envp);
 		if (cmd)
+		{
+			if (should_add_to_history(cmd))
+				add_history(cmd);
 			free(cmd);
+		}
 		if (!data.pipex)
 			break ;
 		status = run_pipex(&data);
@@ -48,6 +52,7 @@ int	main(int argc, char *argv[], char *envp[])
 	}	
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
+	clear_history(); // TODO: change to rl_clear_history() if def at school
 	return (0);
 }
 
