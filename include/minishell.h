@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 13:34:42 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/16 18:31:10 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/17 00:00:13 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void			minishell_pwd(void);
 void			minishell_cd(char **split);
 int				minishell_echo(char **split);
 int				minishell_export(char **split, t_mshell_data *data);
-int				minishell_exit(t_mshell_data *data, int exit_code);
+void			minishell_exit(t_mshell_data *data, int exit_code);
 
 // cmd exe functions
 void	print_arr(char *arr[]);
