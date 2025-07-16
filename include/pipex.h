@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 10:23:56 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/16 09:28:47 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/16 11:17:38 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef struct s_pipex
 	char	*infile;
 	char	*outfile;
 	char	**cmds;
-	char	**envp;
+	// char	**envp;
 	int		is_heredoc;
 	int		n_cmds;
 }	t_pipex;

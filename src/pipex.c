@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:11:02 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/13 23:41:49 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/16 11:18:24 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ t_pipex	*init_pipex(char *cmd, char *envp[])
 {
 	t_pipex	*new_pipex;
 
+	(void ) envp;
 	new_pipex = (t_pipex *)malloc(sizeof(t_pipex));
 	if (!new_pipex)
 		return (NULL);
@@ -29,7 +30,7 @@ t_pipex	*init_pipex(char *cmd, char *envp[])
 		return (NULL);
 	}
 	new_pipex->n_cmds = split_size(new_pipex->cmds);
-	new_pipex->envp = envp;
+	// new_pipex->envp = envp;
 	new_pipex->infile = NULL;
 	new_pipex->outfile = NULL;
 	new_pipex->is_heredoc = 0;

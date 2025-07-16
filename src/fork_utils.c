@@ -6,12 +6,34 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:42:03 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/16 00:28:19 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/16 11:52:03 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <fcntl.h>
+
+int	is_state_builtin(char *cmd)
+{
+	char			**split;
+
+	// printf("Parsing ...%s...\n", cmd);
+	if (!cmd)
+		return (FAIL);
+	split = ft_split(cmd, ' ');
+	if (!split || !split[0])
+	{
+		free_split(split);
+		return (-1);
+	}
+	if (ft_strncmp(split[0], "cd", 3) == 0)
+		return (1);
+	if (ft_strncmp(split[0], "export", 7) == 0)
+		return (1);
+	if (ft_strncmp(split[0], "exit", 5) == 0)
+		return (1);
+	return (0);
+}
 
 int	run_pipex(t_mshell_data *mshell_struct)
 {
@@ -30,8 +52,13 @@ int	run_pipex(t_mshell_data *mshell_struct)
 		pids[i] = fork();
 		if (pids[i] < 0)
 			return (ECHILD);
-		if (pids[i] == 0)
-			run_fork(i, mshell_struct, pipes);
+		if (is_state_builtin(mshell_struct->pipex->cmds[i])) // some cmds like export, cd, exit should not be run in fork!!!
+			parse_builtin(mshell_struct->pipex->cmds[i], mshell_struct);
+		else
+		{
+			if (pids[i] == 0)
+				run_fork(i, mshell_struct, pipes);
+		}
 		if (i != 0)
 			close_pipe(pipes[0]);
 		pipes[0][READ_END] = pipes[1][READ_END];
@@ -118,6 +145,7 @@ void	run_cmd(char *argv, t_mshell_data *mshell_struct, int fd[])
 		close(fd[WRITE_END]);
 	}
 	builtin_status = parse_builtin(argv, mshell_struct);
+	printf("%lu", mshell_struct->env_len);
 	if (builtin_status != CMD_NOT_FOUND)
 		exit(builtin_status);
 	args = ft_split_cmd(argv, ' ');
