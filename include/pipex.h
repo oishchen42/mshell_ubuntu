@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 10:23:56 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/16 00:28:33 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/16 11:17:38 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef struct s_pipex
 	char	*infile;
 	char	*outfile;
 	char	**cmds;
-	char	**envp;
+	// char	**envp;
 	int		is_heredoc;
 	int		n_cmds;
 }	t_pipex;
@@ -40,6 +40,7 @@ typedef struct s_mshell_data
 {
 	t_pipex	*pipex;
 	char	**env;
+	size_t	max_env_len;
 	size_t	env_len;
 	int		status;
 }	t_mshell_data;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oishchen <oishchen@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 17:24:02 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/14 17:20:33 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/07/16 09:33:19 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,18 @@ void	print_arr(char *arr[])
 	while (arr[i])
 	{
 		printf("%s\n", arr[i]);
+		i++;
+	}
+}
+
+void	print_env(t_mshell_data *data)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < data->env_len)
+	{
+		printf("%s\n", data->env[i]);
 		i++;
 	}
 }
