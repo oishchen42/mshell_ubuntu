@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:42:03 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/16 11:52:03 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/16 14:02:34 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int	is_state_builtin(char *cmd)
 {
 	char			**split;
 
-	// printf("Parsing ...%s...\n", cmd);
 	if (!cmd)
 		return (FAIL);
 	split = ft_split(cmd, ' ');
@@ -145,7 +144,6 @@ void	run_cmd(char *argv, t_mshell_data *mshell_struct, int fd[])
 		close(fd[WRITE_END]);
 	}
 	builtin_status = parse_builtin(argv, mshell_struct);
-	printf("%lu", mshell_struct->env_len);
 	if (builtin_status != CMD_NOT_FOUND)
 		exit(builtin_status);
 	args = ft_split_cmd(argv, ' ');
