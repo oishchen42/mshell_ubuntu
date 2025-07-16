@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 13:34:42 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/16 09:32:45 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/16 16:48:55 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,10 @@ t_mshell_data	*ft_realloc(t_mshell_data *data, char **envp);
 */
 int	init_data_env(t_mshell_data *data, char **envp);
 
+int should_add_to_history(const char *line);
+
 //clean functions
 void			free_split(char	**split);
-void	free_pipex(t_pipex	*pipex);
+void			free_pipex(t_pipex	*pipex);
 
 #endif
