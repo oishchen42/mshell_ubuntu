@@ -6,7 +6,7 @@
 #    By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 20:34:46 by nmikuka           #+#    #+#              #
-#    Updated: 2025/07/13 21:27:10 by nmikuka          ###   ########.fr        #
+#    Updated: 2025/07/15 18:40:08 by nmikuka          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,12 +37,12 @@ GNL_SRC = $(addprefix $(GNL_DIR)/, $(GNL_FILES))
 OBJ = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 GNL_OBJ = $(addprefix $(GNL_DIR)/, $(GNL_FILES:.c=.o))
 
+all: $(LIBFT) $(NAME)
+
 # Build libft.a
 $(LIBFT):
 	@echo "Building libft..."
 	@$(MAKE) -C $(LIBFT_DIR)
-
-all: $(LIBFT) $(NAME)
 
 $(NAME): $(OBJ) $(GNL_OBJ)
 	$(CC) $(CFLAGS) $(OBJ) $(GNL_OBJ) $(READLINE_LIB) $(LIBFT) -o $@

@@ -6,28 +6,26 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 12:02:33 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/14 00:09:27 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/16 00:25:54 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static char	*get_promt(void);
-// static int	parse(char *cmd, t_mshell_data *data);
 static char	*get_curr_dir(void);
 
 int	main(int argc, char *argv[], char *envp[])
 {
-	char	*cmd;
-	char	*promt;
-	t_pipex	*pipex_struct;
-	int		status;
+	char			*cmd;
+	char			*promt;
+	int				status;
 	t_mshell_data	data;
 
 	(void) argc;
 	(void) argv;
 	(void) envp;
-	if (init_data_env(&data, envp) == EXIT_SUCCESS)
+	if (init_data_env(&data, envp) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	while (1)
 	{
@@ -35,13 +33,18 @@ int	main(int argc, char *argv[], char *envp[])
 		cmd = readline(promt);
 		if (promt)
 			free(promt);
-		pipex_struct = init_pipex(cmd, envp);
-		if (!pipex_struct)
-			return (EXIT_FAILURE);
-		status = run_pipex(pipex_struct);
-		free_pipex(pipex_struct);
+		data.pipex = init_pipex(cmd, envp);
 		if (cmd)
 			free(cmd);
+		if (!data.pipex)
+			break ;
+		status = run_pipex(&data);
+		free_pipex(data.pipex);
+		if (!data.status)
+		{
+			free_split(data.env);
+			break ;
+		}
 	}	
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
@@ -90,18 +93,18 @@ static char	*get_curr_dir(void)
 	return (curr_dir);
 }
 
-int	parse(char *cmd, t_mshell_data *data)
+int	parse_builtin(char *cmd, t_mshell_data *data)
 {
 	char			**split;
 
 	// printf("Parsing ...%s...\n", cmd);
 	if (!cmd)
-		return (1);
+		return (FAIL);
 	split = ft_split(cmd, ' ');
 	if (!split || !split[0])
 	{
 		free_split(split);
-		return (1);
+		return (FAIL);
 	}
 	if (ft_strncmp(split[0], "cd", 2) == 0)
 		minishell_cd(split);
@@ -113,8 +116,13 @@ int	parse(char *cmd, t_mshell_data *data)
 		minishell_echo(split);
 	else if (ft_strncmp(split[0], "export", 7) == 0)
 		minishell_export(split, data);
+	else
+	{
+		// free_split(data->env);
+		return (CMD_NOT_FOUND);
+	}
 	if (!data->status)
 		free_split(data->env);
 	free_split(split);
-	return (1);
+	return (SUCCESS);
 }

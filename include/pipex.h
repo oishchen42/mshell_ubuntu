@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 10:23:56 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/13 21:43:22 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/16 00:28:33 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,14 @@ typedef struct s_pipex
 	int		n_cmds;
 }	t_pipex;
 
+typedef struct s_mshell_data
+{
+	t_pipex	*pipex;
+	char	**env;
+	size_t	env_len;
+	int		status;
+}	t_mshell_data;
+
 /* special version of split for commands,
 i.e checks for "" and '', additionally removes escape chars */
 char	**ft_split_cmd(char const *s, char c);
@@ -48,11 +56,11 @@ void	suppress_mask_chars(char **str);
 t_pipex	*init_pipex(char *cmd, char *envp[]);
 
 /* main pipex logic */
-int		run_pipex(t_pipex *pipex_struct);
-void	run_fork(int i, t_pipex *pipex_struct, int pipes[2][2]);
-void	run_first_cmd(t_pipex *pipex_struct, int pipe[2]);
-void	run_last_cmd(t_pipex *pipex_struct, int pipe[2]);
-void	run_cmd(char *argv, char *envp[], int fd[]);
+int		run_pipex(t_mshell_data *mshell_struct);
+void	run_fork(int i, t_mshell_data *mshell_struct, int pipes[2][2]);
+void	run_first_cmd(t_mshell_data *mshell_struct, int pipe[2]);
+void	run_last_cmd(t_mshell_data *mshell_struct, int pipe[2]);
+void	run_cmd(char *argv, t_mshell_data *mshell_struct, int fd[]);
 
 /* some helper functions to get environment vars and executable commands */
 char	*find_path(char **env);
