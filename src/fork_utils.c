@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:42:03 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/16 14:02:34 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/16 18:56:50 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,16 @@ int	run_pipex(t_mshell_data *mshell_struct)
 	{
 		if (pipe(pipes[1]) == -1)
 			return (EPIPE);
-		pids[i] = fork();
-		if (pids[i] < 0)
-			return (ECHILD);
 		if (is_state_builtin(mshell_struct->pipex->cmds[i])) // some cmds like export, cd, exit should not be run in fork!!!
+		{
 			parse_builtin(mshell_struct->pipex->cmds[i], mshell_struct);
+			pids[i] = -1;
+		}
 		else
 		{
+			pids[i] = fork();
+			if (pids[i] < 0)
+				return (ECHILD);
 			if (pids[i] == 0)
 				run_fork(i, mshell_struct, pipes);
 		}
