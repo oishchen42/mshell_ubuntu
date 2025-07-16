@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 16:45:55 by oishchen          #+#    #+#             */
-/*   Updated: 2025/07/16 09:28:25 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/16 09:43:00 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,4 +78,4 @@ int	minishell_export(char **split, t_mshell_data *data)
 		}
 	}
 	return (EXIT_SUCCESS);
-}
+} 
