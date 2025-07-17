@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+         #
+#    By: oishchen <oishchen@student.42heilbronn.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 20:34:46 by nmikuka           #+#    #+#              #
-#    Updated: 2025/07/16 16:47:32 by nmikuka          ###   ########.fr        #
+#    Updated: 2025/07/17 16:18:49 by oishchen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ NAME := minishell
 # Source and object files
 SRC_FILES := main.c run_cmd.c clean_utils.c export_utils.c general_utils.c \
 			pipex.c ft_split_cmd.c fork_utils.c pipex_utils.c \
-			history_utils.c
+			history_utils.c unset_buildin.c
 GNL_FILES := get_next_line.c get_next_line_utils.c
 
 # Structure of SRC and OBJ

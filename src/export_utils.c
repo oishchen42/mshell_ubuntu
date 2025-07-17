@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: oishchen <oishchen@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 16:45:55 by oishchen          #+#    #+#             */
-/*   Updated: 2025/07/16 11:53:11 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/17 17:56:11 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	add_new_env(char *keyvalue, t_mshell_data *data)
 {
 	int	key_idx;
 
-	key_idx = find_env(keyvalue, data);
+	key_idx = find_env(keyvalue, data, '=');
 	if (key_idx == -1)
 		return (0);
 	if ((unsigned int)key_idx < data->max_env_len)
@@ -45,21 +45,6 @@ static int	add_new_env(char *keyvalue, t_mshell_data *data)
 	return (1);
 }
 
-static int	is_valid_export_key(char *key_value)
-{
-	int		i;
-
-	i = 0;
-	if (ft_isalpha(key_value[i]) || key_value[i++] == '_')
-	{
-		while (key_value[i] && (ft_isalnum(key_value[i]) || key_value[i] == '_'))
-				i++;
-		if (key_value[i] == '=')
-			return (1);
-	}
-	return (0);
-}
-
 int	minishell_export(char **split, t_mshell_data *data)
 {
 	int		i;
@@ -67,7 +52,7 @@ int	minishell_export(char **split, t_mshell_data *data)
 	i = 1;
 	while (split[i])
 	{
-		if (is_valid_export_key(split[i]))
+		if (is_valid_key(split[i], '='))
 		{
 			if (!add_new_env(split[i], data))
 			{
@@ -76,6 +61,10 @@ int	minishell_export(char **split, t_mshell_data *data)
 			}
 			i++;
 		}
+		else
+			return (ft_putendl_fd("export: not valid in this context", 2), EXIT_FAILURE);
 	}
+	if (!split[1])
+		print_env(data);
 	return (EXIT_SUCCESS);
-} 
+}
