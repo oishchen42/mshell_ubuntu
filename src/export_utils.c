@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oishchen <oishchen@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 16:45:55 by oishchen          #+#    #+#             */
-/*   Updated: 2025/07/17 17:56:11 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/07/17 20:40:27 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 static t_mshell_data *add_env(t_mshell_data *data, char *keyvalue, int	key_idx)
 {
-	free(data->env[key_idx]);
+	if ((unsigned int)key_idx < data->env_len)
+		free(data->env[key_idx]);
 	data->env[key_idx] = ft_strdup(keyvalue);
 	if (!data->env[key_idx])
 		data->status = 0;
@@ -28,18 +29,17 @@ static int	add_new_env(char *keyvalue, t_mshell_data *data)
 	key_idx = find_env(keyvalue, data, '=');
 	if (key_idx == -1)
 		return (0);
+	if ((unsigned int)key_idx >= data->env_len)
+		data->env_len++;
 	if ((unsigned int)key_idx < data->max_env_len)
 		data = add_env(data, keyvalue, key_idx);
 	else
 	{
-		data->env_len++;
 		if (ft_realloc(data, data->env))
 			data = add_env(data, keyvalue, key_idx);
 		else
 			data->status = 0;
 	}
-	if ((unsigned int)key_idx >= data->env_len)
-		data->env_len++;
 	if (data->status == 0)
 		return (0);
 	return (1);
