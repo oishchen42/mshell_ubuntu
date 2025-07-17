@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 17:24:02 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/16 09:33:19 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/16 18:01:25 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,16 @@ int	minishell_echo(char **split)
 	if (newline)
 		printf("\n");
 	return (1);
+}
+
+void	minishell_exit(t_mshell_data *data, int exit_code)
+{
+	if (isatty(STDIN_FILENO))
+		printf("exit\n");
+	free_split(data->env);
+	free_pipex(data->pipex);
+	clear_history();
+    exit(exit_code);;
 }
 
 void	print_arr(char *arr[])
