@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 00:09:10 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/17 21:00:35 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/18 16:58:44 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,14 @@ typedef enum {
 	QUOTE_DOUBLE
 } quote_state;
 
-char	**tokenize(const char *input);
+typedef struct s_token
+{
+	char	*content;
+	int		quote_state;
+	int		is_pipe;
+}	t_token;
+
+t_token	*tokenize(const char *input);
 int		check_quote_balance(const char *input);
 
 #endif

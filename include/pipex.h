@@ -6,18 +6,12 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 10:23:56 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/16 11:17:38 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/18 16:59:02 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_BONUS_H
 # define PIPEX_BONUS_H
-
-# define ERROR_NO_CMD 10
-# define ERROR_NO_FILE 20
-
-# define READ_END 0
-# define WRITE_END 1
 
 # include <unistd.h>
 # include <stdlib.h>
@@ -25,13 +19,20 @@
 # include <string.h>
 # include <fcntl.h>
 # include <sys/wait.h>
+# include "tokenize.h"
+
+# define ERROR_NO_CMD 10
+# define ERROR_NO_FILE 20
+
+# define READ_END 0
+# define WRITE_END 1
 
 typedef struct s_pipex
 {
 	char	*infile;
 	char	*outfile;
+	t_token	*tokens;
 	char	**cmds;
-	// char	**envp;
 	int		is_heredoc;
 	int		n_cmds;
 }	t_pipex;
