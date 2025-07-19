@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oishchen <oishchen@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 13:34:42 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/17 17:35:32 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/07/19 18:45:46 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ int	init_data_env(t_mshell_data *data, char **envp);
 int	is_valid_key(char *key_value, int separator);
 
 int should_add_to_history(const char *line);
+
+void	free_env(t_mshell_data *data);
 
 //clean functions
 void			free_split(char	**split);

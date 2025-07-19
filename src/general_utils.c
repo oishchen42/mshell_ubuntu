@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 15:41:03 by oishchen          #+#    #+#             */
-/*   Updated: 2025/07/17 20:03:56 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/07/19 18:49:50 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,7 @@ int	find_env(char *keyvalue, t_mshell_data *data, int separator)
 	char	*key;
 	char	*key_end;
 
-	if (separator == '=')
-		key_end = ft_strchr(keyvalue, '=');
-	else
-		key_end = ft_strchr(keyvalue, '\0');
+	key_end = ft_strchr(keyvalue, separator);
 	if (key_end[0] == separator)
 	{
 		key = ft_substr(keyvalue, 0, key_end - keyvalue);
@@ -102,16 +99,19 @@ int	is_valid_key(char *key_value, int separator)
 		i++;
 		while (key_value[i] && (ft_isalnum(key_value[i]) || key_value[i] == '_'))
 				i++;
-		if (separator == '=')
-		{
-			if (key_value[i] == '=')
+		if (key_value[i] == separator)
 				return (1);
-		}
-		else
-		{
-			if (key_value[i] == '\0')
-				return (1);
-		}
 	}
 	return (0);
+}
+
+void	free_env(t_mshell_data *data)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < data->env_len)
+		free(data->env[i++]);
+	if (data->env)
+		free(data->env);
 }
