@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:42:03 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/16 18:56:50 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/20 12:35:34 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ int	is_state_builtin(char *cmd)
 	if (ft_strncmp(split[0], "cd", 3) == 0)
 		return (1);
 	if (ft_strncmp(split[0], "export", 7) == 0)
+		return (1);
+	if (ft_strncmp(split[0], "unset", 6) == 0)
 		return (1);
 	if (ft_strncmp(split[0], "exit", 5) == 0)
 		return (1);
