@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 15:41:03 by oishchen          #+#    #+#             */
-/*   Updated: 2025/07/16 10:09:59 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/20 13:35:19 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,28 +19,27 @@ ALSO used at the beginning of the main to copy the envp to data->env
 	@param envp - almost always NULL except at the beginning of the main;
 */
 
-int	find_env(char *keyvalue, t_mshell_data *data)
+int	find_env(char *keyvalue, t_mshell_data *data, int separator)
 {
 	size_t	i;
 	char	*key;
-	char	*equal;
+	char	*key_end;
 
-	equal = ft_strchr(keyvalue, '=');
-	if (equal)
+	key_end = ft_strchr(keyvalue, separator);
+	if (key_end[0] != separator)
+		return (-1);
+	key = ft_substr(keyvalue, 0, key_end - keyvalue);
+	if (!key)
+		return (-1);
+	i = 0;
+	while (data->env[i] && i < data->env_len)
 	{
-		key = ft_substr(keyvalue, 0, equal - keyvalue);
-		if (!key)
-			return (-1);
-		i = 0;
-		while (data->env[i] && i < data->env_len)
-		{
-			if (ft_strncmp(data->env[i], key, ft_strlen(key)) == 0)
-				return (free(key), i);
-			i++;
-		}
-		return (free(key), i);
+		if (ft_strncmp(data->env[i], key, ft_strlen(key) + 1) == '=')
+			return (free(key), i);
+		i++;
 	}
-	return (-1);
+	free(key);
+	return (i);
 }
 
 t_mshell_data	*ft_realloc(t_mshell_data *data, char **envp)
@@ -87,4 +86,31 @@ int	init_data_env(t_mshell_data *data, char **envp)
 	}
 	data->status = 0;
 	return (EXIT_FAILURE);
+}
+
+int	is_valid_key(char *key_value, int separator)
+{
+	int		i;
+
+	i = 0;
+	if (ft_isalpha(key_value[i]) || key_value[i] == '_')
+	{
+		i++;
+		while (key_value[i] && (ft_isalnum(key_value[i]) || key_value[i] == '_'))
+				i++;
+		if (key_value[i] == separator)
+				return (1);
+	}
+	return (0);
+}
+
+void	free_env(t_mshell_data *data)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < data->env_len)
+		free(data->env[i++]);
+	if (data->env)
+		free(data->env);
 }

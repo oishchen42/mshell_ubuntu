@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: oishchen <oishchen@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 12:02:33 by nmikuka           #+#    #+#             */
 /*   Updated: 2025/07/18 20:47:47 by nmikuka          ###   ########.fr       */
@@ -52,6 +52,7 @@ int	main(int argc, char *argv[], char *envp[])
 		free_pipex(data.pipex);
 		if (!data.status)
 		{
+			printf("WE ARE IN DATA ERASER\n"); // DELETE
 			free_split(data.env);
 			break ;
 		}
@@ -121,6 +122,8 @@ int	parse_builtin(t_command cmd, t_mshell_data *data)
 		minishell_export(cmd.args, data);
 	else if (ft_strncmp(cmd.args[0], "exit", 5) == 0)
 		minishell_exit(data, 0);
+	else if (ft_strncmp(split[0], "unset", 5) == 0)
+		minishell_unset(split, data);
 	else
 	{
 		// free_split(data->env);
