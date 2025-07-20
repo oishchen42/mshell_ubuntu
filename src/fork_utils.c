@@ -6,30 +6,22 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:42:03 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/16 18:56:50 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/18 20:54:46 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <fcntl.h>
 
-int	is_state_builtin(char *cmd)
+int	is_state_builtin(t_command cmd)
 {
-	char			**split;
-
-	if (!cmd)
+	if (!cmd.args)
 		return (FAIL);
-	split = ft_split(cmd, ' ');
-	if (!split || !split[0])
-	{
-		free_split(split);
-		return (-1);
-	}
-	if (ft_strncmp(split[0], "cd", 3) == 0)
+	if (ft_strncmp(cmd.args[0], "cd", 3) == 0)
 		return (1);
-	if (ft_strncmp(split[0], "export", 7) == 0)
+	if (ft_strncmp(cmd.args[0], "export", 7) == 0)
 		return (1);
-	if (ft_strncmp(split[0], "exit", 5) == 0)
+	if (ft_strncmp(cmd.args[0], "exit", 5) == 0)
 		return (1);
 	return (0);
 }
@@ -48,9 +40,9 @@ int	run_pipex(t_mshell_data *mshell_struct)
 	{
 		if (pipe(pipes[1]) == -1)
 			return (EPIPE);
-		if (is_state_builtin(mshell_struct->pipex->cmds[i])) // some cmds like export, cd, exit should not be run in fork!!!
+		if (is_state_builtin(mshell_struct->pipex->commands[i])) // some cmds like export, cd, exit should not be run in fork!!!
 		{
-			parse_builtin(mshell_struct->pipex->cmds[i], mshell_struct);
+			parse_builtin(mshell_struct->pipex->commands[i], mshell_struct);
 			pids[i] = -1;
 		}
 		else
@@ -86,7 +78,7 @@ void	run_fork(int i, t_mshell_data *mshell_struct, int pipes[2][2])
 		close(pipes[1][READ_END]);
 		curr_fd[READ_END] = pipes[0][READ_END];
 		curr_fd[WRITE_END] = pipes[1][WRITE_END];
-		run_cmd(mshell_struct->pipex->cmds[i], mshell_struct, curr_fd);
+		run_cmd(mshell_struct->pipex->commands[i], mshell_struct, curr_fd);
 	}
 	else
 		run_last_cmd(mshell_struct, pipes[0]);
@@ -103,7 +95,7 @@ void	run_first_cmd(t_mshell_data *mshell_struct, int pipe[2])
 	}
 	else
 		pipe[READ_END] = -1;
-	run_cmd(mshell_struct->pipex->cmds[0], mshell_struct, pipe);
+	run_cmd(mshell_struct->pipex->commands[0], mshell_struct, pipe);
 }
 
 void	run_last_cmd(t_mshell_data *mshell_struct, int pipe[2])
@@ -125,14 +117,13 @@ void	run_last_cmd(t_mshell_data *mshell_struct, int pipe[2])
 	}
 	else
 		pipe[WRITE_END] = -1;
-	run_cmd(mshell_struct->pipex->cmds[mshell_struct->pipex->n_cmds - 1], mshell_struct,
+	run_cmd(mshell_struct->pipex->commands[mshell_struct->pipex->n_cmds - 1], mshell_struct,
 		pipe);
 }
 
-void	run_cmd(char *argv, t_mshell_data *mshell_struct, int fd[])
+void	run_cmd(t_command command, t_mshell_data *mshell_struct, int fd[])
 {
 	char	*cmd;
-	char	**args;
 	int		err_code;
 	int		builtin_status;
 
@@ -146,22 +137,20 @@ void	run_cmd(char *argv, t_mshell_data *mshell_struct, int fd[])
 		dup2(fd[WRITE_END], STDOUT_FILENO);
 		close(fd[WRITE_END]);
 	}
-	builtin_status = parse_builtin(argv, mshell_struct);
+	builtin_status = parse_builtin(command, mshell_struct);
 	if (builtin_status != CMD_NOT_FOUND)
 		exit(builtin_status);
-	args = ft_split_cmd(argv, ' ');
-	cmd = get_exec_cmd(args[0], mshell_struct->env, &err_code);
+	cmd = get_exec_cmd(command.args[0], mshell_struct->env, &err_code);
 	if (cmd && (access(cmd, F_OK) == 0) && (access(cmd, X_OK) == -1))
 	{
 		free(cmd);
-		exit_with_error_and_free("permission denied", args, 126);
+		exit_with_error_and_free("permission denied", NULL, 126);
 	}
 	if (cmd == NULL && err_code == ERROR_NO_FILE)
-		exit_with_error_and_free(strerror(errno), args, 127);
+		exit_with_error_and_free(strerror(errno), NULL, 127);
 	if (cmd == NULL)
-		exit_with_error_and_free("command not found", args, 127);
-	execve(cmd, args, mshell_struct->env);
+		exit_with_error_and_free("command not found", NULL, 127);
+	execve(cmd, command.args, mshell_struct->env);
 	free(cmd);
-	free_split(args);
 	exit_with_error("execve error", NULL, 127);
 }

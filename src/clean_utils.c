@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 17:38:33 by oishchen          #+#    #+#             */
-/*   Updated: 2025/07/13 22:03:42 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/18 20:06:10 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,12 @@ void	free_split(char	**split)
 
 void	free_pipex(t_pipex	*pipex)
 {
-	int	i;
+	// int	i;
 
 	if (!pipex)
 		return ;
-	i = 0;
-	while (pipex->cmds[i])
-		free(pipex->cmds[i++]);
-	i = 0;
+	// i = 0;
+	// while (pipex->cmds[i])
+	// 	free(pipex->cmds[i++]);
 	free(pipex);
 }

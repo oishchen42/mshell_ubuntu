@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 13:34:42 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/17 00:00:13 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/18 20:48:02 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # define SUCCESS 0
 # define CMD_NOT_FOUND -1
 
-int				parse_builtin(char *cmd, t_mshell_data *data);
+int				parse_builtin(t_command cmd, t_mshell_data *data);
 void			minishell_pwd(void);
 void			minishell_cd(char **split);
 int				minishell_echo(char **split);
