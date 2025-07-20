@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   unset_builtin.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 15:38:39 by oishchen          #+#    #+#             */
-/*   Updated: 2025/07/19 20:02:58 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/07/20 13:42:35 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	**shift_env(t_mshell_data *data, int key_idx)
+static char	**delete_and_shift_env(t_mshell_data *data, int key_idx)
 {
 	size_t	i;
 
@@ -29,6 +29,7 @@ static char	**shift_env(t_mshell_data *data, int key_idx)
 		i++;
 	}
 	data->env_len--;
+	data->env[data->env_len] = NULL;
 	return (data->env);
 }
 
@@ -42,12 +43,12 @@ int	minishell_unset(char **split, t_mshell_data *data)
 		return (ft_putendl_fd("unset: not enough arguments", 2), EXIT_FAILURE);
 	while (split[i])
 	{
-		if (is_valid_key(split[i], '\0') == 0)
+		if (!is_valid_key(split[i], '\0'))
 			return (ft_putendl_fd("unset: invalid parameter name", 2), EXIT_FAILURE);
 		key_idx = find_env(split[i], data, '\0');
 		if (key_idx == -1 || (unsigned int)key_idx >= data->env_len)
 			return (ft_putendl_fd("Error: KEY was not found", 2), EXIT_FAILURE);
-		data->env = shift_env(data, key_idx);
+		data->env = delete_and_shift_env(data, key_idx);
 		if (!data->env)
 		{
 			printf("NO DATA->ENV in unset\n");

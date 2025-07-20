@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   general_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 15:41:03 by oishchen          #+#    #+#             */
-/*   Updated: 2025/07/19 18:49:50 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/07/20 13:35:19 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,21 +26,20 @@ int	find_env(char *keyvalue, t_mshell_data *data, int separator)
 	char	*key_end;
 
 	key_end = ft_strchr(keyvalue, separator);
-	if (key_end[0] == separator)
+	if (key_end[0] != separator)
+		return (-1);
+	key = ft_substr(keyvalue, 0, key_end - keyvalue);
+	if (!key)
+		return (-1);
+	i = 0;
+	while (data->env[i] && i < data->env_len)
 	{
-		key = ft_substr(keyvalue, 0, key_end - keyvalue);
-		if (!key)
-			return (-1);
-		i = 0;
-		while (data->env[i] && i < data->env_len)
-		{
-			if (ft_strncmp(data->env[i], key, ft_strlen(key) + 1) == '=')
-				return (free(key), i);
-			i++;
-		}
-		return (free(key), i);
+		if (ft_strncmp(data->env[i], key, ft_strlen(key) + 1) == '=')
+			return (free(key), i);
+		i++;
 	}
-	return (-1);
+	free(key);
+	return (i);
 }
 
 t_mshell_data	*ft_realloc(t_mshell_data *data, char **envp)
