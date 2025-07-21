@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 16:45:55 by oishchen          #+#    #+#             */
-/*   Updated: 2025/07/17 23:25:55 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/21 19:58:43 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,20 +68,3 @@ int	minishell_export(char **split, t_mshell_data *data)
 		print_env(data);
 	return (EXIT_SUCCESS);
 } 
-
-
-int	is_valid_key(char *key_value, int separator)
-{
-	int		i;
-
-	i = 0;
-	while (key_value[i])
-	{
-		if (!ft_isalnum(key_value[i]) && key_value[i] != '_')
-			return (0);
-		if (separator == '=' && key_value[i] == '=')
-				return (1);
-		i++;
-	}
-	return (1);
-}

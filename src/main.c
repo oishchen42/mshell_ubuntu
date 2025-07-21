@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oishchen <oishchen@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 12:02:33 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/18 20:47:47 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/21 19:49:59 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,8 +122,8 @@ int	parse_builtin(t_command cmd, t_mshell_data *data)
 		minishell_export(cmd.args, data);
 	else if (ft_strncmp(cmd.args[0], "exit", 5) == 0)
 		minishell_exit(data, 0);
-	else if (ft_strncmp(split[0], "unset", 5) == 0)
-		minishell_unset(split, data);
+	else if (ft_strncmp(cmd.args[0], "unset", 5) == 0)
+		minishell_unset(cmd.args, data);
 	else
 	{
 		// free_split(data->env);

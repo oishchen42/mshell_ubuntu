@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:42:03 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/20 12:35:34 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/21 19:50:31 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ int	is_state_builtin(t_command cmd)
 		return (1);
 	if (ft_strncmp(cmd.args[0], "export", 7) == 0)
 		return (1);
-	if (ft_strncmp(split[0], "unset", 6) == 0)
+	if (ft_strncmp(cmd.args[0], "unset", 6) == 0)
 		return (1);
-	if (ft_strncmp(split[0], "exit", 5) == 0)
+	if (ft_strncmp(cmd.args[0], "exit", 5) == 0)
 		return (1);
 	return (0);
 }
