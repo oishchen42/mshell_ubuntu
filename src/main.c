@@ -6,7 +6,7 @@
 /*   By: oishchen <oishchen@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 12:02:33 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/17 18:10:31 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/07/23 02:32:05 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,15 @@ int	main(int argc, char *argv[], char *envp[])
 	(void) envp;
 	if (init_data_env(&data, envp) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
+	set_signals();
 	while (1)
 	{
 		promt = get_promt();
 		cmd = readline(promt);
 		if (promt)
 			free(promt);
+		else
+			minishell_exit(&data, 0);
 		data.pipex = init_pipex(cmd, envp);
 		if (cmd)
 		{
