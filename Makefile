@@ -6,7 +6,7 @@
 #    By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 20:34:46 by nmikuka           #+#    #+#              #
-#    Updated: 2025/07/22 21:06:09 by nmikuka          ###   ########.fr        #
+#    Updated: 2025/07/23 23:39:26 by nmikuka          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,8 +19,8 @@ INCLUDES := include
 
 # Compiler and flags
 CC := cc
-CFLAGS := -Wall -Wextra -Werror -I$(INCLUDES) -I$(LIBFT_DIR)
-READLINE_LIB := -lreadline
+CFLAGS := -Wall -Wextra -Werror -I$(INCLUDES) -I$(LIBFT_DIR) -I/opt/homebrew/opt/readline/include # TODO: delete last arg is for my personal laptop
+READLINE_LIB := -lreadline -L/opt/homebrew/opt/readline/lib # TODO: delete last arg is for my personal laptop
 LIBFT = $(LIBFT_DIR)/libft.a
 
 # Library name

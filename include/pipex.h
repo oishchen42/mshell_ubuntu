@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 10:23:56 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/22 23:42:02 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/23 17:18:37 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@
 
 typedef struct s_pipex
 {
-	int			is_heredoc;
 	t_command	*commands;
 	int			n_cmds;
 }	t_pipex;
@@ -51,7 +50,7 @@ int		run_pipex(t_mshell_data *mshell_struct);
 void	run_fork(int i, t_mshell_data *mshell_struct, int pipes[2][2]);
 // void	run_first_cmd(t_mshell_data *mshell_struct, int pipe[2]);
 // void	run_last_cmd(t_mshell_data *mshell_struct, int pipe[2]);
-void	run_cmd(t_command cmd, t_mshell_data *mshell_struct, int fd[2]);
+void	run_cmd(t_command cmd, t_mshell_data *mshell_struct);
 
 /* some helper functions to get environment vars and executable commands */
 char	*get_exec_cmd(char *cmd, char **env, int *err_code);

@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 20:32:40 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/22 23:41:51 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/23 17:40:28 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,14 @@ static void handle_heredoc(char *heredoc_delimiter)
 	close(pipefd[0]);
 }
 
-void handle_redirections(t_list *redirs) {
-	t_list *current = redirs;
+void handle_redirections(t_list *redirs)
+{
+	int		fd;
+	t_list	*current;
 	
+	current = redirs;
 	while (current) {
 		t_redir *redir = (t_redir *)current->content;
-		int fd;
 		
 		if (redir->type == REDIR_OUTPUT)
 		{

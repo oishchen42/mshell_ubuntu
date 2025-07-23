@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:11:02 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/22 23:28:35 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/23 18:13:31 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ t_pipex	*init_pipex(char *cmd, char *envp[])
 		free_pipex(new_pipex);
 		return (NULL);
 	}
-	new_pipex->is_heredoc = 0;
 	return (new_pipex);
 }
 
@@ -46,7 +45,6 @@ int	wait_for_child_procs(int pids[], int size)
 			waitpid(pids[i], NULL, 0);
 		i++;
 	}
-	free(pids);
 	return (status);
 }
 

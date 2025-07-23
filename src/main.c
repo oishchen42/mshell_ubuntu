@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 12:02:33 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/21 19:49:59 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/23 16:26:04 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	main(int argc, char *argv[], char *envp[])
 	}	
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
-	clear_history(); // TODO: change to rl_clear_history() if def at school
+	rl_clear_history();
 	return (0);
 }
 
