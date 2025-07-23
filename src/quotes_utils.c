@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 00:02:35 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/19 11:12:20 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/22 18:40:49 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ t_command	create_command_from_tokens(t_token *tokens, int start)
 	if (token_count == 0)
 		return (cmd);
 	cmd.args = malloc(sizeof(char *) * (token_count + 1));
+	cmd.redirections = NULL;
 	if (!cmd.args)
 	{
 		perror("minishell: malloc");
@@ -52,6 +53,12 @@ t_command	create_command_from_tokens(t_token *tokens, int start)
 	arg_index = 0;
 	while (tokens[i].content && !tokens[i].is_pipe)
 	{
+		if (tokens[i].redir_type != REDIR_NONE)
+		{
+			add_redirection(&(cmd.redirections), tokens, i);
+			i += 2;
+			continue ;
+		}
 		cmd.args[arg_index] = ft_strdup(tokens[i].content);
 		if (!cmd.args[arg_index])
 		{
@@ -63,12 +70,10 @@ t_command	create_command_from_tokens(t_token *tokens, int start)
 		i++;
 	}
 	cmd.args[arg_index] = NULL;
+	print_redirections(cmd.redirections);
 	return (cmd);
 }
 
-/**
- * Count pipes in token array
- */
 int	count_pipes(t_token *tokens)
 {
 	int	i;

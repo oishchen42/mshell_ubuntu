@@ -6,13 +6,16 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 18:47:11 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/13 21:44:32 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/22 23:31:53 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*find_path(char **env)
+static char	*get_path_to(char *cmd, char *path);
+static char	*find_path(char **env);
+
+static char	*find_path(char **env)
 {
 	while (*env)
 	{
@@ -48,7 +51,7 @@ char	*get_exec_cmd(char *cmd, char **env, int *err_code)
 	return (get_path_to(cmd_ext, path));
 }
 
-char	*get_path_to(char *cmd, char *path)
+static char	*get_path_to(char *cmd, char *path)
 {
 	char	**split_paths;
 	char	*exec;

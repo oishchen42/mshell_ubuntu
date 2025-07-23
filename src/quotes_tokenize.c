@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 00:02:31 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/20 12:12:12 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/22 18:41:10 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 static void		free_partial_tokens(t_token *tokens, int count);
 static int		skip_whitespace(const char *input, int i, int len);
 static int		find_token_end(const char *input, int start, int len,
-					quote_state *token_quote);
+					t_quote_state *token_quote);
 static t_token	create_token(const char *input, int start, int end,
-					quote_state token_quote);
+					t_quote_state token_quote);
 
 t_token	*tokenize(const char *input)
 {
@@ -29,12 +29,12 @@ t_token	*tokenize(const char *input)
 	int			token_count;
 	t_token		new_token;
 	t_token		*tokens;
-	quote_state	token_quote;
+	t_quote_state	token_quote;
 
 	if (!input)
 		return (NULL);
 	len = ft_strlen(input);
-	tokens = (t_token *)malloc(sizeof(t_token *) * (len + 1));
+	tokens = (t_token *)malloc(sizeof(t_token) * (len + 1));
 	if (!tokens)
 		return (NULL);
 	token_count = 0;
@@ -58,6 +58,12 @@ t_token	*tokenize(const char *input)
 	tokens[token_count].content = NULL;
 	tokens[token_count].quote_state = QUOTE_NONE;
 	tokens[token_count].is_pipe = 0;
+	// i = 0;
+	// while (tokens[i].content)
+	// { 
+	// 	printf("check %s\n", tokens[i].content);
+	// 	i++;
+	// }
 	return (tokens);
 }
 
@@ -69,7 +75,7 @@ static int	skip_whitespace(const char *input, int i, int len)
 }
 
 static int	find_token_end(const char *input, int start, int len,
-		quote_state *token_quote)
+		t_quote_state *token_quote)
 {
 	int		i;
 	char	c;
@@ -81,6 +87,12 @@ static int	find_token_end(const char *input, int start, int len,
 		*token_quote = QUOTE_DOUBLE;
 	else if (input[start] == '|')
 		return (start + 1);
+	else if (get_redir_type(input + start) == REDIR_APPEND
+			|| get_redir_type(input + start) == REDIR_HEREDOC)
+		return (start + 2);
+	else if (get_redir_type(input + start) == REDIR_INPUT
+			|| get_redir_type(input + start) == REDIR_OUTPUT)
+		return (start + 1);
 	i = start + 1;
 	while (i < len)
 	{
@@ -91,6 +103,8 @@ static int	find_token_end(const char *input, int start, int len,
 				break ;
 			if (c == '|')
 				break ;
+			if (c == '<' || c == '>')
+				break;
 		}
 		else if ((*token_quote == QUOTE_SINGLE && c == '\'')
 			|| (*token_quote == QUOTE_DOUBLE && c == '"'))
@@ -106,13 +120,14 @@ static int	find_token_end(const char *input, int start, int len,
 }
 
 static t_token	create_token(const char *input, int start, int end,
-		quote_state token_quote)
+		t_quote_state token_quote)
 {
 	t_token	new_token;
 	int		token_len;
 
 	new_token.content = NULL;
 	new_token.quote_state = token_quote;
+	new_token.redir_type = REDIR_NONE;
 	new_token.is_pipe = 0;
 	if (token_quote != QUOTE_NONE)
 	{
@@ -125,8 +140,12 @@ static t_token	create_token(const char *input, int start, int end,
 		return (new_token);
 	ft_strlcpy(new_token.content, input + start, token_len + 1);
 	new_token.content[token_len] = '\0';
-	if (token_quote == QUOTE_NONE && ft_strncmp(new_token.content, "|", 2) == 0)
-		new_token.is_pipe = 1;
+	if (token_quote == QUOTE_NONE)
+	{
+		if(ft_strncmp(new_token.content, "|", 2) == 0)
+			new_token.is_pipe = 1;
+		new_token.redir_type = get_redir_type(new_token.content);
+	}
 	return (new_token);
 }
 
@@ -151,7 +170,7 @@ int	check_quote_balance(const char *input)
 	int			i;
 	int			len;
 	char		c;
-	quote_state	state;
+	t_quote_state	state;
 
 	if (!input)
 		return (1);

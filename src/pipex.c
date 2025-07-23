@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:11:02 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/19 11:13:12 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/22 23:28:35 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,12 @@ t_pipex	*init_pipex(char *cmd, char *envp[])
 	new_pipex = (t_pipex *)malloc(sizeof(t_pipex));
 	if (!new_pipex)
 		return (NULL);
-	new_pipex->infile = NULL;
 	new_pipex->commands = create_commands_from_tokens(tokenize(cmd), &new_pipex->n_cmds);
 	if (!new_pipex->commands)
 	{
 		free_pipex(new_pipex);
 		return (NULL);
 	}
-	new_pipex->infile = NULL;
-	new_pipex->outfile = NULL;
 	new_pipex->is_heredoc = 0;
 	return (new_pipex);
 }
