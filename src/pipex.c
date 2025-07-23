@@ -6,13 +6,11 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:11:02 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/16 11:18:24 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/19 11:13:12 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static int	split_size(char **arr);
 
 t_pipex	*init_pipex(char *cmd, char *envp[])
 {
@@ -23,14 +21,12 @@ t_pipex	*init_pipex(char *cmd, char *envp[])
 	if (!new_pipex)
 		return (NULL);
 	new_pipex->infile = NULL;
-	new_pipex->cmds = ft_split(cmd, '|');
-	if (!new_pipex->cmds)
+	new_pipex->commands = create_commands_from_tokens(tokenize(cmd), &new_pipex->n_cmds);
+	if (!new_pipex->commands)
 	{
 		free_pipex(new_pipex);
 		return (NULL);
 	}
-	new_pipex->n_cmds = split_size(new_pipex->cmds);
-	// new_pipex->envp = envp;
 	new_pipex->infile = NULL;
 	new_pipex->outfile = NULL;
 	new_pipex->is_heredoc = 0;
@@ -61,16 +57,4 @@ void	close_pipe(int fd[2])
 {
 	close(fd[READ_END]);
 	close(fd[WRITE_END]);
-}
-
-static int	split_size(char **arr)
-{
-	int	size;
-
-	if (!arr)
-		return (0);
-	size = 0;
-	while (arr[size])
-		size++;
-	return (size);
 }

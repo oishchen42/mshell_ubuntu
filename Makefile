@@ -28,8 +28,9 @@ NAME := minishell
 
 # Source and object files
 SRC_FILES := main.c run_cmd.c clean_utils.c export_utils.c general_utils.c \
-			pipex.c ft_split_cmd.c fork_utils.c pipex_utils.c \
-			history_utils.c unset_builtin.c
+			pipex.c fork_utils.c pipex_utils.c \
+			history_utils.c quotes_tokenize.c quotes_utils.c \
+      unset_builtin.c
 GNL_FILES := get_next_line.c get_next_line_utils.c
 
 # Structure of SRC and OBJ

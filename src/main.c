@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oishchen <oishchen@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 12:02:33 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/17 18:10:31 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/07/21 19:49:59 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,12 @@ int	main(int argc, char *argv[], char *envp[])
 		cmd = readline(promt);
 		if (promt)
 			free(promt);
+		if (!check_quote_balance(cmd))
+		{
+			write(STDERR_FILENO, "error: unbalanced quotes\n", 26);
+			free(cmd);
+			continue ;
+		}
 		data.pipex = init_pipex(cmd, envp);
 		if (cmd)
 		{
@@ -99,40 +105,32 @@ static char	*get_curr_dir(void)
 	return (curr_dir);
 }
 
-int	parse_builtin(char *cmd, t_mshell_data *data)
+int	parse_builtin(t_command cmd, t_mshell_data *data)
 {
-	char			**split;
-
 	// printf("Parsing ...%s...\n", cmd);
-	if (!cmd)
+	if (!cmd.args)
 		return (FAIL);
-	split = ft_split(cmd, ' ');
-	if (!split || !split[0])
-	{
-		free_split(split);
-		return (FAIL);
-	}
-	if (ft_strncmp(split[0], "cd", 3) == 0)
-		minishell_cd(split);
-	else if (ft_strncmp(split[0], "pwd", 4) == 0)
+	if (ft_strncmp(cmd.args[0], "cd", 3) == 0)
+		minishell_cd(cmd.args);
+	else if (ft_strncmp(cmd.args[0], "pwd", 4) == 0)
 		minishell_pwd();
-	else if (ft_strncmp(split[0], "env", 4) == 0)
+	else if (ft_strncmp(cmd.args[0], "env", 4) == 0)
 		print_env(data);
-	else if (ft_strncmp(split[0], "echo", 5) == 0)
-		minishell_echo(split);
-	else if (ft_strncmp(split[0], "export", 7) == 0)
-		minishell_export(split, data);
-	else if (ft_strncmp(split[0], "exit", 5) == 0)
+	else if (ft_strncmp(cmd.args[0], "echo", 5) == 0)
+		minishell_echo(cmd.args);
+	else if (ft_strncmp(cmd.args[0], "export", 7) == 0)
+		minishell_export(cmd.args, data);
+	else if (ft_strncmp(cmd.args[0], "exit", 5) == 0)
 		minishell_exit(data, 0);
-	else if (ft_strncmp(split[0], "unset", 5) == 0)
-		minishell_unset(split, data);
+	else if (ft_strncmp(cmd.args[0], "unset", 5) == 0)
+		minishell_unset(cmd.args, data);
 	else
 	{
 		// free_split(data->env);
 		return (CMD_NOT_FOUND);
 	}
-	if (!data->status)
-		free_split(data->env);
-	free_split(split);
+	// if (!data->status)
+	// 	free_split(data->env);
+	// free_split(split);
 	return (SUCCESS);
 }
