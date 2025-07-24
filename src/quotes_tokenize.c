@@ -34,7 +34,7 @@ t_token	*tokenize(const char *input)
 	if (!input)
 		return (NULL);
 	len = ft_strlen(input);
-	tokens = (t_token *)malloc(sizeof(t_token *) * (len + 1));
+	tokens = (t_token *)malloc(sizeof(t_token) * (len + 1));
 	if (!tokens)
 		return (NULL);
 	token_count = 0;
