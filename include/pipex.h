@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 10:23:56 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/23 17:18:37 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/24 00:35:54 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,6 @@ t_pipex	*init_pipex(char *cmd, char *envp[]);
 
 /* main pipex logic */
 int		run_pipex(t_mshell_data *mshell_struct);
-void	run_fork(int i, t_mshell_data *mshell_struct, int pipes[2][2]);
-// void	run_first_cmd(t_mshell_data *mshell_struct, int pipe[2]);
-// void	run_last_cmd(t_mshell_data *mshell_struct, int pipe[2]);
 void	run_cmd(t_command cmd, t_mshell_data *mshell_struct);
 
 /* some helper functions to get environment vars and executable commands */
@@ -57,8 +54,8 @@ char	*get_exec_cmd(char *cmd, char **env, int *err_code);
 void	exit_with_error(const char *msg, const char *obj, int exit_code);
 void	exit_with_error_and_free(const char *msg, char **obj, int exit_code);
 
+void	handle_heredoc(char *heredoc_name, char *delimiter);
 void	handle_redirections(t_list *redirs);
 int		wait_for_child_procs(int pids[], int size);
-void	close_pipe(int fd[2]);
 
 #endif

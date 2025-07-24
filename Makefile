@@ -6,7 +6,7 @@
 #    By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 20:34:46 by nmikuka           #+#    #+#              #
-#    Updated: 2025/07/23 23:39:26 by nmikuka          ###   ########.fr        #
+#    Updated: 2025/07/24 00:37:16 by nmikuka          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ NAME := minishell
 
 # Source and object files
 SRC_FILES := main.c run_cmd.c clean_utils.c export_utils.c general_utils.c \
-			pipex.c fork_utils.c pipex_utils.c \
+			pipex.c fork_utils.c pipex_utils.c heredoc_utils.c \
 			history_utils.c quotes_tokenize.c quotes_utils.c redir.c redir_handler.c \
       unset_builtin.c
 GNL_FILES := get_next_line.c get_next_line_utils.c

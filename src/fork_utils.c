@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:42:03 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/23 23:37:50 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/24 14:09:49 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 static int	is_builtin(t_command cmd)
 {
-	if (!cmd.args)
+	if (!cmd.args || !cmd.args[0])
 		return (0);
 	if (ft_strncmp(cmd.args[0], "cd", 3) == 0)
 		return (1);
@@ -58,7 +58,6 @@ int	run_pipex(t_mshell_data *mshell_struct)
 	int		builtin_status;
 	int	saved_stdin, saved_stdout;
 	
-
 	if (!n_cmds)
 		return (EXIT_SUCCESS);
 	if (n_cmds == 1 && is_builtin(mshell_struct->pipex->commands[0]))
@@ -79,7 +78,6 @@ int	run_pipex(t_mshell_data *mshell_struct)
 			return (EPIPE);
 		i++;
 	}
-	
 	// Fork all children
 	i = 0;
 	while (i < n_cmds)
@@ -99,7 +97,6 @@ int	run_pipex(t_mshell_data *mshell_struct)
 				close(pipes[j][WRITE_END]);
 				j++;
 			}
-			
 			run_cmd(mshell_struct->pipex->commands[i], mshell_struct);
 			exit(EXIT_FAILURE);
 		}
@@ -115,7 +112,6 @@ int	run_pipex(t_mshell_data *mshell_struct)
 		i++;
 	}
 	free(pipes);
-	
 	// Wait for all children
 	int status = wait_for_child_procs(pids, n_cmds);
 	free(pids);
@@ -129,6 +125,8 @@ void	run_cmd(t_command command, t_mshell_data *mshell_struct)
 	int		builtin_status;
     
     handle_redirections(command.redirections);
+	if (!command.args || !command.args[0])
+        exit(0);
 	builtin_status = parse_builtin(command, mshell_struct);
 	if (builtin_status != CMD_NOT_FOUND)
 		exit(builtin_status);

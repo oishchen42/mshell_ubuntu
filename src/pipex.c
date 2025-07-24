@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:11:02 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/23 18:13:31 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/23 23:42:43 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,3 @@ int	wait_for_child_procs(int pids[], int size)
 	return (status);
 }
 
-void	close_pipe(int fd[2])
-{
-	close(fd[READ_END]);
-	close(fd[WRITE_END]);
-}

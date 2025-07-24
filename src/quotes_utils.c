@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 00:02:35 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/22 18:40:49 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/24 00:20:29 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ t_command	create_command_from_tokens(t_token *tokens, int start)
 		i++;
 	}
 	cmd.args[arg_index] = NULL;
-	print_redirections(cmd.redirections);
 	return (cmd);
 }
 

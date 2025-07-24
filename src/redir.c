@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 21:22:57 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/22 21:02:31 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/24 14:07:28 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,9 @@ static t_redir	*create_redir(t_redir_type type, char *filename)
 		free(redir);
 		return (NULL);
 	}
+	redir->heredoc_delimiter = NULL;
+	if (type == REDIR_HEREDOC)
+		redir->heredoc_delimiter = ft_strdup(filename);
 	return (redir);
 }
 
