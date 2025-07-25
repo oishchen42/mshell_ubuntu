@@ -6,11 +6,11 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:45:05 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/25 00:41:39 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/25 14:05:09 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "minishell.h"
 
 static char	*ft_getline(void);
 static char	*read_line(char *buffer, int buffer_size);

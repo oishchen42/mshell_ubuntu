@@ -6,11 +6,11 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 20:32:40 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/25 00:42:47 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/25 14:05:25 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "minishell.h"
 
 static void	handle_input_redirection(const char *filename);
 static void	handle_output_redirection(const char *filename);

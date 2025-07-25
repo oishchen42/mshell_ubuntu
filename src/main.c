@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 12:02:33 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/25 00:14:31 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/25 14:19:08 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,34 +101,4 @@ static char	*get_curr_dir(void)
 	curr_dir = ft_strjoin(split[i - 1], "");
 	free_split(split);
 	return (curr_dir);
-}
-
-int	parse_builtin(t_command cmd, t_mshell_data *data)
-{
-	// printf("Parsing ...%s...\n", cmd);
-	if (!cmd.args)
-		return (FAIL);
-	if (ft_strncmp(cmd.args[0], "cd", 3) == 0)
-		minishell_cd(cmd.args);
-	else if (ft_strncmp(cmd.args[0], "pwd", 4) == 0)
-		minishell_pwd();
-	else if (ft_strncmp(cmd.args[0], "env", 4) == 0)
-		print_env(data);
-	else if (ft_strncmp(cmd.args[0], "echo", 5) == 0)
-		minishell_echo(cmd.args);
-	else if (ft_strncmp(cmd.args[0], "export", 7) == 0)
-		minishell_export(cmd.args, data);
-	else if (ft_strncmp(cmd.args[0], "exit", 5) == 0)
-		minishell_exit(data, 0);
-	else if (ft_strncmp(cmd.args[0], "unset", 5) == 0)
-		minishell_unset(cmd.args, data);
-	else
-	{
-		// free_split(data->env);
-		return (CMD_NOT_FOUND);
-	}
-	// if (!data->status)
-	// 	free_split(data->env);
-	// free_split(split);
-	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 00:09:10 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/25 00:14:48 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/25 14:04:33 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include "libft.h"
+
+# define ERROR_NO_CMD 10
+# define ERROR_NO_FILE 20
+
+# define READ_END 0
+# define WRITE_END 1
 
 typedef enum quote_state
 {
