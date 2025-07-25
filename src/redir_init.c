@@ -1,16 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redir.c                                            :+:      :+:    :+:   */
+/*   redir_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 21:22:57 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/24 14:07:28 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/25 10:08:18 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokenize.h"
+
+static t_redir	*create_redir(t_redir_type type, char *filename);
 
 t_redir_type	get_redir_type(const char *token)
 {
@@ -25,56 +27,6 @@ t_redir_type	get_redir_type(const char *token)
 	if (ft_strncmp(token, ">", 1) == 0)
 		return (REDIR_OUTPUT);
 	return (REDIR_NONE);
-}
-
-static t_redir	*create_redir(t_redir_type type, char *filename)
-{
-	t_redir	*redir;
-
-	redir = malloc(sizeof(t_redir));
-	if (!redir)
-		return (NULL);
-	redir->type = type;
-	redir->filename = ft_strdup(filename);
-	if (!redir->filename)
-	{
-		free(redir);
-		return (NULL);
-	}
-	redir->heredoc_delimiter = NULL;
-	if (type == REDIR_HEREDOC)
-		redir->heredoc_delimiter = ft_strdup(filename);
-	return (redir);
-}
-
-void	print_redirections(t_list *redirections)
-{
-	t_list	*current;
-	t_redir	*redir_data;
-	char	*type_names[] = {"NONE", "INPUT(<)", "OUTPUT(>)",
-		"APPEND(>>)", "HEREDOC(<<)"};
-
-	current = redirections;
-	while (current)
-	{
-		redir_data = (t_redir *)current->content;
-		printf("  Redirection: %s %i %s\n",
-			type_names[redir_data->type],
-			redir_data->type,
-			redir_data->filename);
-		current = current->next;
-	}
-}
-
-void	free_redir_content(void *content)
-{
-	t_redir	*redir;
-
-	if (!content)
-		return ;
-	redir = (t_redir *)content;
-	free(redir->filename);
-	free(redir);
 }
 
 int	add_redirection(t_list **redirections, t_token *tokens, int i)
@@ -104,4 +56,55 @@ int	add_redirection(t_list **redirections, t_token *tokens, int i)
 	}
 	ft_lstadd_back(redirections, new_node);
 	return (0);
+}
+
+static t_redir	*create_redir(t_redir_type type, char *filename)
+{
+	t_redir	*redir;
+
+	redir = malloc(sizeof(t_redir));
+	if (!redir)
+		return (NULL);
+	redir->type = type;
+	redir->filename = ft_strdup(filename);
+	if (!redir->filename)
+	{
+		free(redir);
+		return (NULL);
+	}
+	redir->heredoc_delimiter = NULL;
+	if (type == REDIR_HEREDOC)
+		redir->heredoc_delimiter = ft_strdup(filename);
+	return (redir);
+}
+
+void	free_redir_content(void *content)
+{
+	t_redir	*redir;
+
+	if (!content)
+		return ;
+	redir = (t_redir *)content;
+	free(redir->filename);
+	free(redir);
+}
+
+// TODO: delete this for the final version
+void	print_redirections(t_list *redirections)
+{
+	t_list	*current;
+	t_redir	*redir_data;
+	char	*type_names[] = {"NONE", "INPUT(<)", "OUTPUT(>)",
+		"APPEND(>>)", "HEREDOC(<<)"};
+
+	current = redirections;
+	while (current)
+	{
+		redir_data = (t_redir *)current->content;
+		printf("  Redirection: %s %i %s\n",
+			type_names[redir_data->type],
+			redir_data->type,
+			redir_data->filename);
+		current = current->next;
+	}
 }

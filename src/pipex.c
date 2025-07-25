@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:11:02 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/25 00:19:38 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/25 13:31:55 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,7 @@ int	parse_cmd(char *cmd, t_mshell_data *data)
 	data->commands = create_commands_from_tokens(tokens, &data->n_cmds);
 	free_tokens(tokens);
 	if (!data->commands)
-	{
 		return (0);
-	}
 	return (1);
 }
 
