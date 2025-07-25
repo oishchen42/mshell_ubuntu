@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:45:05 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/24 14:32:43 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/25 00:41:39 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static char	*read_line(char *buffer, int buffer_size);
 static char	*duplicate_buffer_size(char *buffer, int *buffer_size);
 static char	*free_buffer(char *buffer);
 
-void	handle_heredoc(char *heredoc_name, char *delimiter)
+void	handle_heredoc(char *heredoc_name, const char *delimiter)
 {
 	int		fd;
 	char	*next_line;

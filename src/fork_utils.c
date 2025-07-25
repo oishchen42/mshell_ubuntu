@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:42:03 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/24 14:09:49 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/25 00:18:33 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,17 +54,17 @@ int	run_pipex(t_mshell_data *mshell_struct)
 	pid_t	*pids;
 	int		i;
 	int		j;
-	int		n_cmds = mshell_struct->pipex->n_cmds;
+	int		n_cmds = mshell_struct->n_cmds;
 	int		builtin_status;
 	int	saved_stdin, saved_stdout;
 	
 	if (!n_cmds)
 		return (EXIT_SUCCESS);
-	if (n_cmds == 1 && is_builtin(mshell_struct->pipex->commands[0]))
+	if (n_cmds == 1 && is_builtin(mshell_struct->commands[0]))
 	{
 		save_std_fds(&saved_stdin, &saved_stdout);
-		handle_redirections(mshell_struct->pipex->commands[0].redirections);
-		builtin_status = parse_builtin(mshell_struct->pipex->commands[0], mshell_struct);
+		handle_redirections(mshell_struct->commands[0].redirections);
+		builtin_status = parse_builtin(mshell_struct->commands[0], mshell_struct);
 		restore_std_fds(saved_stdin, saved_stdout);
 		return (builtin_status);
 	}
@@ -97,7 +97,7 @@ int	run_pipex(t_mshell_data *mshell_struct)
 				close(pipes[j][WRITE_END]);
 				j++;
 			}
-			run_cmd(mshell_struct->pipex->commands[i], mshell_struct);
+			run_cmd(mshell_struct->commands[i], mshell_struct);
 			exit(EXIT_FAILURE);
 		}
 		i++;

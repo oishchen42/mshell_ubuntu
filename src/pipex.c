@@ -6,27 +6,28 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:11:02 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/23 23:42:43 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/25 00:19:38 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_pipex	*init_pipex(char *cmd, char *envp[])
+int	parse_cmd(char *cmd, t_mshell_data *data)
 {
-	t_pipex	*new_pipex;
+	t_token *tokens;
 
-	(void ) envp;
-	new_pipex = (t_pipex *)malloc(sizeof(t_pipex));
-	if (!new_pipex)
-		return (NULL);
-	new_pipex->commands = create_commands_from_tokens(tokenize(cmd), &new_pipex->n_cmds);
-	if (!new_pipex->commands)
+	data->commands = NULL;
+	data->n_cmds = 0;
+	tokens = tokenize(cmd);
+	if (!tokens)
+		return (0);
+	data->commands = create_commands_from_tokens(tokens, &data->n_cmds);
+	free_tokens(tokens);
+	if (!data->commands)
 	{
-		free_pipex(new_pipex);
-		return (NULL);
+		return (0);
 	}
-	return (new_pipex);
+	return (1);
 }
 
 int	wait_for_child_procs(int pids[], int size)

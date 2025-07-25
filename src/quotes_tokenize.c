@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 00:02:31 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/22 18:41:10 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/25 00:18:52 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,6 +158,19 @@ static void	free_partial_tokens(t_token *tokens, int count)
 
 	i = 0;
 	while (i < count)
+	{
+		free(tokens[i].content);
+		i++;
+	}
+	free(tokens);
+}
+
+void	free_tokens(t_token *tokens)
+{
+	int	i;
+
+	i = 0;
+	while (tokens[i].content)
 	{
 		free(tokens[i].content);
 		i++;

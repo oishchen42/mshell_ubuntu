@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 12:02:33 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/23 16:26:04 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/25 00:14:31 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,15 @@ int	main(int argc, char *argv[], char *envp[])
 			free(cmd);
 			continue ;
 		}
-		data.pipex = init_pipex(cmd, envp);
-		if (cmd)
-		{
-			if (should_add_to_history(cmd))
+		if (should_add_to_history(cmd))
 				add_history(cmd);
+		parse_cmd(cmd, &data);
+		if (cmd)
 			free(cmd);
-		}
-		if (!data.pipex)
+		if (!data.commands)
 			break ;
 		status = run_pipex(&data);
-		free_pipex(data.pipex);
+		free_commands(data.commands, data.n_cmds);
 		if (!data.status)
 		{
 			printf("WE ARE IN DATA ERASER\n"); // DELETE

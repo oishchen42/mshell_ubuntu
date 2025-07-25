@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 10:23:56 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/24 00:35:54 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/25 00:41:54 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,23 +27,18 @@
 # define READ_END 0
 # define WRITE_END 1
 
-typedef struct s_pipex
-{
-	t_command	*commands;
-	int			n_cmds;
-}	t_pipex;
-
 typedef struct s_mshell_data
 {
-	t_pipex	*pipex;
-	char	**env;
-	size_t	max_env_len;
-	size_t	env_len;
-	int		status;
+	char		**env;
+	size_t		max_env_len;
+	size_t		env_len;
+	t_command	*commands;
+	int			n_cmds;
+	int			status;
 }	t_mshell_data;
 
 /* functions to initialize pipex struct */
-t_pipex	*init_pipex(char *cmd, char *envp[]);
+int		parse_cmd(char *cmd, t_mshell_data *data);
 
 /* main pipex logic */
 int		run_pipex(t_mshell_data *mshell_struct);
@@ -54,7 +49,7 @@ char	*get_exec_cmd(char *cmd, char **env, int *err_code);
 void	exit_with_error(const char *msg, const char *obj, int exit_code);
 void	exit_with_error_and_free(const char *msg, char **obj, int exit_code);
 
-void	handle_heredoc(char *heredoc_name, char *delimiter);
+void	handle_heredoc(char *heredoc_name, const char *delimiter);
 void	handle_redirections(t_list *redirs);
 int		wait_for_child_procs(int pids[], int size);
 

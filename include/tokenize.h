@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 00:09:10 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/23 17:40:52 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/25 00:14:48 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ typedef struct s_command
 t_token			*tokenize(const char *input);
 int				check_quote_balance(const char *input);
 t_command		*create_commands_from_tokens(t_token *tokens, int *n_cmds);
+void			free_tokens(t_token *tokens);
+void			free_commands(t_command *cmds, int n_cmds);
 
 /* redirections */
 int				add_redirection(t_list **redirections, t_token *tokens, int i);

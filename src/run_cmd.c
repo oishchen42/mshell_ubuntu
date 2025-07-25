@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oishchen <oishchen@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 17:24:02 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/18 21:29:47 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/25 00:16:03 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	minishell_exit(t_mshell_data *data, int exit_code)
 	if (isatty(STDIN_FILENO))
 		printf("exit\n");
 	free_split(data->env);
-	free_pipex(data->pipex);
+	free_commands(data->commands, data->n_cmds);
 	clear_history();
     exit(exit_code);;
 }
