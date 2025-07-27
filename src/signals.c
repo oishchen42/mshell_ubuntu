@@ -33,7 +33,7 @@ void	set_signals()
 
 	ft_bzero(&ft_sigint, sizeof(ft_sigint));
 	ft_bzero(&ft_sigquit, sizeof(ft_sigquit));
-	ft_sigint.sa_handler = &print_new_prompt;
+	ft_sigint.sa_handler = print_new_prompt;
 	ft_sigquit.sa_handler = SIG_IGN;
 	sigaction(SIGINT, &ft_sigint, NULL);
 	sigaction(SIGQUIT, &ft_sigquit, NULL);
