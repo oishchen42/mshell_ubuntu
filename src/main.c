@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 12:02:33 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/21 19:49:59 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/23 02:32:05 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	main(int argc, char *argv[], char *envp[])
 	(void) envp;
 	if (init_data_env(&data, envp) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
+	set_signals();
 	while (1)
 	{
 		promt = get_promt();

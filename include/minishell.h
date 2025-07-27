@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oishchen <oishchen@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 13:34:42 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/19 18:45:46 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/07/23 02:35:36 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <unistd.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <signal.h>
 # include "libft.h"
 # include "pipex.h"
 
@@ -32,6 +33,9 @@ int				minishell_echo(char **split);
 int				minishell_export(char **split, t_mshell_data *data);
 void			minishell_exit(t_mshell_data *data, int exit_code);
 int				minishell_unset(char **split, t_mshell_data *data);
+
+// signals
+void	set_signals();
 
 // cmd exe functions
 void	print_arr(char *arr[]);
