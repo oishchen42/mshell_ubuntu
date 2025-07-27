@@ -26,7 +26,7 @@
 # define SUCCESS 0
 # define CMD_NOT_FOUND -1
 
-int				parse_builtin(char *cmd, t_mshell_data *data);
+int				parse_builtin(t_command cmd, t_mshell_data *data);
 void			minishell_pwd(void);
 void			minishell_cd(char **split);
 int				minishell_echo(char **split);
