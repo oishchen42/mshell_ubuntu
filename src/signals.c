@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oishchen <oishchen@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: oishchen <oishchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 00:55:15 by oishchen          #+#    #+#             */
-/*   Updated: 2025/07/23 02:33:03 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/07/27 02:49:53 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,12 @@ static void	print_new_prompt(int signum)
 	int	status;
 
 	status = write(1, "\n", 1);
-	if (status == 1)
+	if (status == 1 && RL_ISSTATE(RL_STATE_READCMD))
 	{
 		rl_on_new_line();
-		rl_replace_line("", 1);
+		rl_replace_line("", 0);
 		rl_redisplay();
 	}
-	else
-		ft_putendl_fd("Error: stdout is closed", 2);
 }
 
 void	set_signals()
@@ -33,6 +31,8 @@ void	set_signals()
 	struct sigaction	ft_sigint;
 	struct sigaction	ft_sigquit;
 
+	ft_bzero(&ft_sigint, sizeof(ft_sigint));
+	ft_bzero(&ft_sigquit, sizeof(ft_sigquit));
 	ft_sigint.sa_handler = &print_new_prompt;
 	ft_sigquit.sa_handler = SIG_IGN;
 	sigaction(SIGINT, &ft_sigint, NULL);
