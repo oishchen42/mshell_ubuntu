@@ -6,13 +6,13 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 16:45:55 by oishchen          #+#    #+#             */
-/*   Updated: 2025/07/25 18:41:21 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/28 21:40:00 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_mshell_data *add_env(t_mshell_data *data, char *keyvalue, int	key_idx)
+static t_mshell_data	*add_env(t_mshell_data *data, char *keyvalue, int key_idx)
 {
 	if ((unsigned int)key_idx < data->env_len)
 		free(data->env[key_idx]);
@@ -67,4 +67,4 @@ int	minishell_export(char **split, t_mshell_data *data)
 	if (!split[1])
 		minishell_env(data);
 	return (EXIT_SUCCESS);
-} 
+}

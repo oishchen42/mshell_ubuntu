@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:11:02 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/27 20:14:41 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/28 21:40:50 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,15 @@
 
 int	parse_cmd(char *cmd, t_mshell_data *data)
 {
-	t_token *tokens;
+	t_token	*tokens;
 
 	data->commands = NULL;
 	data->n_cmds = 0;
 	tokens = tokenize(cmd);
 	if (!tokens)
 		return (0);
-	data->commands = create_commands_from_tokens(tokens, &data->n_cmds, data->env);
+	data->commands = create_commands_from_tokens(tokens, &data->n_cmds,
+			data->env);
 	free_tokens(tokens);
 	if (!data->commands)
 		return (0);
@@ -46,4 +47,3 @@ int	wait_for_child_procs(int pids[], int size)
 	}
 	return (status);
 }
-

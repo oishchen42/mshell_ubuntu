@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:42:03 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/25 18:57:24 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/28 21:45:24 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,13 @@ int	run_pipex(t_mshell_data *mshell_struct)
 	pid_t	*pids;
 	int		i;
 	int		j;
-	int		n_cmds = mshell_struct->n_cmds;
+	int		n_cmds;
 	int		builtin_status;
-	int	saved_stdin, saved_stdout;
-	
+	int		saved_stdin;
+	int		saved_stdout;
+	int		status;
+
+	n_cmds = mshell_struct->n_cmds;
 	if (!n_cmds)
 		return (EXIT_SUCCESS);
 	if (n_cmds == 1 && is_builtin(mshell_struct->commands[0]))
@@ -60,7 +63,7 @@ int	run_pipex(t_mshell_data *mshell_struct)
 	// Fork all children
 	i = 0;
 	while (i < n_cmds)
-	{	
+	{
 		pids[i] = fork();
 		if (pids[i] == 0)
 		{
@@ -91,8 +94,7 @@ int	run_pipex(t_mshell_data *mshell_struct)
 		i++;
 	}
 	free(pipes);
-	// Wait for all children
-	int status = wait_for_child_procs(pids, n_cmds);
+	status = wait_for_child_procs(pids, n_cmds);
 	free(pids);
 	return (status);
 }
@@ -102,10 +104,10 @@ void	run_cmd(t_command command, t_mshell_data *mshell_struct)
 	char	*cmd;
 	int		err_code;
 	int		builtin_status;
-    
-    handle_redirections(command.redirections);
+
+	handle_redirections(command.redirections);
 	if (!command.args || !command.args[0])
-        exit(0);
+		exit(0);
 	builtin_status = parse_builtin(command, mshell_struct);
 	if (builtin_status != CMD_NOT_FOUND)
 		exit(builtin_status);

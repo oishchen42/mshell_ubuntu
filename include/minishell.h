@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 13:34:42 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/25 18:40:22 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/28 21:33:25 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ typedef struct s_mshell_data
 	int			n_cmds;
 	int			status;
 }	t_mshell_data;
-
 
 int		is_builtin(t_command cmd);
 
@@ -86,8 +85,8 @@ int		find_env(char *keyvalue, t_mshell_data *data, int separator);
 */
 t_mshell_data	*ft_realloc(t_mshell_data *data, char **envp);
 
-/* initialise data variable with by calculating the length of envp and calling ft_realloc
-	cases:
+/* initialise data variable with by calculating the length of envp
+	and calling ft_realloc cases:
 	1) ft_realloc fails
 		returns FAIL
 	2) data was initialised
@@ -97,7 +96,8 @@ int		init_data_env(t_mshell_data *data, char **envp);
 
 /* checks the KEY for export and uset
 	cases:
-	1) KEY[0] is anything other than alpha || KEY[i] is anything other than alphanum or '_'
+	1) KEY[0] is anything other than alpha || KEY[i] is anything other
+		than alphanum or '_'
 		returns 0 (false)
 	2) KEY[0] is alpha and KEY[i] is alphanum || KEY[i] is '_'
 		returns 1 (true)

@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 12:02:33 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/27 16:57:41 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/28 21:41:28 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	main(int argc, char *argv[], char *envp[])
 			continue ;
 		}
 		if (should_add_to_history(cmd))
-				add_history(cmd);
+			add_history(cmd);
 		parse_cmd(cmd, &data);
 		if (cmd)
 			free(cmd);
@@ -54,7 +54,7 @@ int	main(int argc, char *argv[], char *envp[])
 			free_split(data.env);
 			break ;
 		}
-	}	
+	}
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	rl_clear_history();

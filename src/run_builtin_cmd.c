@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 17:24:02 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/25 18:40:54 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/28 21:34:29 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,4 +89,3 @@ void	minishell_exit(t_mshell_data *data, int exit_code)
 // 		i++;
 // 	}
 // }
-
