@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 12:02:33 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/23 02:32:05 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/07/28 12:23:03 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	main(int argc, char *argv[], char *envp[])
 			free(cmd);
 			continue ;
 		}
-		data.pipex = init_pipex(cmd, envp);
+		data.pipex = init_pipex(cmd, data.env);
 		if (cmd)
 		{
 			if (should_add_to_history(cmd))

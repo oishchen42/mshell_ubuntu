@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: oishchen <oishchen@student.42heilbronn.    +#+  +:+       +#+         #
+#    By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 20:34:46 by nmikuka           #+#    #+#              #
-#    Updated: 2025/07/23 02:19:12 by oishchen         ###   ########.fr        #
+#    Updated: 2025/07/28 12:24:47 by nmikuka          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,8 +19,8 @@ INCLUDES := include
 
 # Compiler and flags
 CC := cc
-CFLAGS := -Wall -Wextra -Werror -I$(INCLUDES) -I$(LIBFT_DIR)
-READLINE_LIB := -lreadline
+CFLAGS := -Wall -Wextra -Werror -I$(INCLUDES) -I$(LIBFT_DIR) #-I/opt/homebrew/opt/readline/include
+READLINE_LIB := -lreadline #-L/opt/homebrew/opt/readline/lib
 LIBFT = $(LIBFT_DIR)/libft.a
 
 # Library name
@@ -30,7 +30,7 @@ NAME := minishell
 SRC_FILES := main.c run_cmd.c clean_utils.c export_utils.c general_utils.c \
 			pipex.c fork_utils.c pipex_utils.c \
 			history_utils.c quotes_tokenize.c quotes_utils.c \
-      unset_builtin.c signals.c
+      unset_builtin.c signals.c heredoc_utils.c var_expansion.c
 GNL_FILES := get_next_line.c get_next_line_utils.c
 
 # Structure of SRC and OBJ
