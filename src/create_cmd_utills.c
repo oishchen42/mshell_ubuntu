@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   quotes_utils.c                                     :+:      :+:    :+:   */
+/*   create_cmd_utills.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 00:02:35 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/24 00:20:29 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/27 20:13:49 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	count_tokens_until_pipe(t_token *tokens, int start)
 /**
  * Creates a command array from tokens (until pipe or end)
  */
-t_command	create_command_from_tokens(t_token *tokens, int start)
+t_command	create_command_from_tokens(t_token *tokens, int start, char **envp)
 {
 	t_command	cmd;
 	int			i;
@@ -59,7 +59,10 @@ t_command	create_command_from_tokens(t_token *tokens, int start)
 			i += 2;
 			continue ;
 		}
-		cmd.args[arg_index] = ft_strdup(tokens[i].content);
+		if (tokens[i].quote_state != QUOTE_SINGLE && ft_strchr(tokens[i].content, '$'))
+			cmd.args[arg_index] = expand_variables(tokens[i].content, envp);
+		else
+			cmd.args[arg_index] = ft_strdup(tokens[i].content);
 		if (!cmd.args[arg_index])
 		{
 			perror("minishell: strdup");
@@ -93,7 +96,7 @@ int	count_pipes(t_token *tokens)
  * Creates commands array from tokens and returns number of commands
  * Returns NULL on error, sets n_cmds to 0
  */
-t_command	*create_commands_from_tokens(t_token *tokens, int *n_cmds)
+t_command	*create_commands_from_tokens(t_token *tokens, int *n_cmds, char **envp)
 {
 	int			token_index;
 	int			cmd_index;
@@ -116,7 +119,7 @@ t_command	*create_commands_from_tokens(t_token *tokens, int *n_cmds)
 	cmd_index = 0;
 	while (tokens[token_index].content && cmd_index < *n_cmds)
 	{
-		commands[cmd_index] = create_command_from_tokens(tokens, token_index);
+		commands[cmd_index] = create_command_from_tokens(tokens, token_index, envp);
 		if (!commands[cmd_index].args)
 		{
 			free_commands(commands, cmd_index);

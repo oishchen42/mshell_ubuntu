@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 16:45:55 by oishchen          #+#    #+#             */
-/*   Updated: 2025/07/21 19:58:43 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/25 18:41:21 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,6 @@ int	minishell_export(char **split, t_mshell_data *data)
 			return (ft_putendl_fd("export: not valid in this context", 2), EXIT_FAILURE);
 	}
 	if (!split[1])
-		print_env(data);
+		minishell_env(data);
 	return (EXIT_SUCCESS);
 } 

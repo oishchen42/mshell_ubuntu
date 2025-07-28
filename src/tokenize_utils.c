@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 13:43:18 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/25 13:54:41 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/27 14:57:11 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,13 @@ int	check_quote_balance(const char *input)
 		input++;
 	}
 	return (state == QUOTE_NONE);
+}
+
+int	skip_whitespace(const char *input, int i, int len)
+{
+	while (i < len && (input[i] == ' ' || input[i] == '\t'))
+		i++;
+	return (i);
 }
 
 void	free_tokens(t_token *tokens)

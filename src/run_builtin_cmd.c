@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 17:24:02 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/25 14:25:18 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/25 18:40:54 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,29 +56,7 @@ int	minishell_echo(char **split)
 	return (1);
 }
 
-void	minishell_exit(t_mshell_data *data, int exit_code)
-{
-	if (isatty(STDIN_FILENO))
-		printf("exit\n");
-	free_split(data->env);
-	free_commands(data->commands, data->n_cmds);
-	rl_clear_history();
-	exit(exit_code);
-}
-
-void	print_arr(char *arr[])
-{
-	int	i;
-
-	i = 0;
-	while (arr[i])
-	{
-		printf("%s\n", arr[i]);
-		i++;
-	}
-}
-
-void	print_env(t_mshell_data *data)
+void	minishell_env(t_mshell_data *data)
 {
 	size_t	i;
 
@@ -89,3 +67,26 @@ void	print_env(t_mshell_data *data)
 		i++;
 	}
 }
+
+void	minishell_exit(t_mshell_data *data, int exit_code)
+{
+	if (isatty(STDIN_FILENO))
+		printf("exit\n");
+	free_split(data->env);
+	free_commands(data->commands, data->n_cmds);
+	rl_clear_history();
+	exit(exit_code);
+}
+
+// void	print_arr(char *arr[])
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (arr[i])
+// 	{
+// 		printf("%s\n", arr[i]);
+// 		i++;
+// 	}
+// }
+

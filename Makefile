@@ -6,7 +6,7 @@
 #    By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/19 20:34:46 by nmikuka           #+#    #+#              #
-#    Updated: 2025/07/25 14:22:38 by nmikuka          ###   ########.fr        #
+#    Updated: 2025/07/27 19:40:32 by nmikuka          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ SRC_FILES := main.c builtin_cmds.c \
 			run_builtin_cmd.c clean_utils.c export_utils.c general_utils.c \
 			create_cmd.c create_cmd_utills.c run_cmd.c find_executable.c heredoc_utils.c \
 			history_utils.c tokenize.c tokenize_utils.c \
-			redir_init.c redir_handler.c \
+			redir_init.c redir_handler.c var_expansion.c \
       unset_builtin.c
 GNL_FILES := get_next_line.c get_next_line_utils.c
 

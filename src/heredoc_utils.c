@@ -6,15 +6,14 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:45:05 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/25 14:05:09 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/27 18:41:22 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static char	*ft_getline(void);
-static char	*read_line(char *buffer, int buffer_size);
-static char	*duplicate_buffer_size(char *buffer, int *buffer_size);
+static char	*read_line(char *buffer, size_t buffer_size);
 static char	*free_buffer(char *buffer);
 
 void	handle_heredoc(char *heredoc_name, const char *delimiter)
@@ -55,11 +54,11 @@ static char	*ft_getline(void)
 	return (buffer);
 }
 
-static char	*read_line(char *buffer, int buffer_size)
+static char	*read_line(char *buffer, size_t buffer_size)
 {
 	char	c;
-	int		read_bytes;
-	int		i;
+	ssize_t	read_bytes;
+	size_t	i;
 
 	read_bytes = read(STDIN_FILENO, &c, 1);
 	i = 0;
@@ -82,9 +81,9 @@ static char	*read_line(char *buffer, int buffer_size)
 	return (buffer);
 }
 
-static char	*duplicate_buffer_size(char *buffer, int *buffer_size)
+char	*duplicate_buffer_size(char *buffer, size_t *buffer_size)
 {
-	int		new_size;
+	size_t	new_size;
 	char	*new_buffer;
 
 	if (!buffer)
@@ -96,6 +95,7 @@ static char	*duplicate_buffer_size(char *buffer, int *buffer_size)
 		free(buffer);
 		return (NULL);
 	}
+	ft_bzero(new_buffer, new_size);
 	ft_strlcpy(new_buffer, buffer, *buffer_size);
 	free(buffer);
 	*buffer_size = new_size;

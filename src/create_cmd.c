@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   create_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:11:02 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/25 13:31:55 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/27 20:14:41 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	parse_cmd(char *cmd, t_mshell_data *data)
 	tokens = tokenize(cmd);
 	if (!tokens)
 		return (0);
-	data->commands = create_commands_from_tokens(tokens, &data->n_cmds);
+	data->commands = create_commands_from_tokens(tokens, &data->n_cmds, data->env);
 	free_tokens(tokens);
 	if (!data->commands)
 		return (0);

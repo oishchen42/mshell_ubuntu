@@ -6,14 +6,14 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 00:02:31 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/25 14:27:30 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/28 11:16:59 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokenize.h"
 
+static int		parse_tokens(const char *input, int len, t_token *tokens);
 static void		free_partial_tokens(t_token *tokens, int count);
-static int		skip_whitespace(const char *input, int i, int len);
 static int		find_token_end(const char *input, int start, int len,
 					t_quote_state *token_quote);
 static t_token	create_token(const char *input, int start, int end,
@@ -21,14 +21,8 @@ static t_token	create_token(const char *input, int start, int end,
 
 t_token	*tokenize(const char *input)
 {
-	int			i;
-	int			len;
-	int			start;
-	int			end;
-	int			token_count;
-	t_token		new_token;
-	t_token		*tokens;
-	t_quote_state	token_quote;
+	int		len;
+	t_token	*tokens;
 
 	if (!input)
 		return (NULL);
@@ -36,6 +30,27 @@ t_token	*tokenize(const char *input)
 	tokens = (t_token *)malloc(sizeof(t_token) * (len + 1));
 	if (!tokens)
 		return (NULL);
+	ft_bzero(tokens, sizeof(t_token) * (len + 1));
+	if (!parse_tokens(input, len, tokens))
+	{
+		free(tokens);
+		return (NULL);
+	}
+	// int i = 0;
+	// while (tokens[i].content)
+	// {
+	// 	printf("%s\n", tokens[i++].content);
+	// }
+	return (tokens);
+}
+
+static int	parse_tokens(const char *input, int len, t_token *tokens)
+{
+	int				i;
+	int				end;
+	int				token_count;
+	t_quote_state	token_quote;
+
 	token_count = 0;
 	i = 0;
 	while (i < len)
@@ -43,28 +58,18 @@ t_token	*tokenize(const char *input)
 		i = skip_whitespace(input, i, len);
 		if (i >= len)
 			break ;
-		start = i;
-		end = find_token_end(input, start, len, &token_quote);
-		new_token = create_token(input, start, end, token_quote);
-		if (!new_token.content)
+		end = find_token_end(input, i, len, &token_quote);
+		tokens[token_count] = create_token(input, i, end, token_quote);
+		if (!tokens[token_count].content)
 		{
 			free_partial_tokens(tokens, token_count);
-			return (NULL);
+			return (0);
 		}
-		tokens[token_count++] = new_token;
+		token_count++;
 		i = end;
 	}
 	tokens[token_count].content = NULL;
-	tokens[token_count].quote_state = QUOTE_NONE;
-	tokens[token_count].is_pipe = 0;
-	return (tokens);
-}
-
-static int	skip_whitespace(const char *input, int i, int len)
-{
-	while (i < len && (input[i] == ' ' || input[i] == '\t'))
-		i++;
-	return (i);
+	return (1);
 }
 
 static int	find_token_end(const char *input, int start, int len,

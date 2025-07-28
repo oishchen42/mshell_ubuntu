@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 13:34:42 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/25 14:21:53 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/25 18:40:22 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,17 +56,17 @@ void	handle_heredoc(char *heredoc_name, const char *delimiter);
 void	handle_redirections(t_list *redirs);
 int		wait_for_child_procs(int pids[], int size);
 
-int				parse_builtin(t_command cmd, t_mshell_data *data);
-void			minishell_pwd(void);
-void			minishell_cd(char **split);
-int				minishell_echo(char **split);
-int				minishell_export(char **split, t_mshell_data *data);
-void			minishell_exit(t_mshell_data *data, int exit_code);
-int				minishell_unset(char **split, t_mshell_data *data);
+int		parse_builtin(t_command cmd, t_mshell_data *data);
+void	minishell_pwd(void);
+void	minishell_cd(char **split);
+int		minishell_echo(char **split);
+void	minishell_env(t_mshell_data *data);
+int		minishell_export(char **split, t_mshell_data *data);
+void	minishell_exit(t_mshell_data *data, int exit_code);
+int		minishell_unset(char **split, t_mshell_data *data);
 
 // cmd exe functions
-void	print_arr(char *arr[]);
-void	print_env(t_mshell_data *data);
+// void	print_arr(char *arr[]);
 
 // general_utils
 
@@ -77,7 +77,7 @@ void	print_env(t_mshell_data *data);
 	2) env variable is found
 		returns env variable index
 */
-int	find_env(char *keyvalue, t_mshell_data *data, int separator);
+int		find_env(char *keyvalue, t_mshell_data *data, int separator);
 
 /*  realocates the data->env, while increasing it's size (x2);
 	cases:
@@ -93,7 +93,7 @@ t_mshell_data	*ft_realloc(t_mshell_data *data, char **envp);
 	2) data was initialised
 		returns SUCCESS
 */
-int	init_data_env(t_mshell_data *data, char **envp);
+int		init_data_env(t_mshell_data *data, char **envp);
 
 /* checks the KEY for export and uset
 	cases:
@@ -102,13 +102,13 @@ int	init_data_env(t_mshell_data *data, char **envp);
 	2) KEY[0] is alpha and KEY[i] is alphanum || KEY[i] is '_'
 		returns 1 (true)
 */
-int	is_valid_key(char *key_value, int separator);
+int		is_valid_key(char *key_value, int separator);
 
-int should_add_to_history(const char *line);
+int		should_add_to_history(const char *line);
 
 void	free_env(t_mshell_data *data);
 
 //clean functions
-void			free_split(char	**split);
+void	free_split(char	**split);
 
 #endif
