@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 13:34:42 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/28 21:33:25 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/29 10:35:01 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <signal.h>
 # include "libft.h"
 # include "tokenize.h"
 
@@ -63,6 +64,9 @@ void	minishell_env(t_mshell_data *data);
 int		minishell_export(char **split, t_mshell_data *data);
 void	minishell_exit(t_mshell_data *data, int exit_code);
 int		minishell_unset(char **split, t_mshell_data *data);
+
+// signals
+void	set_signals();
 
 // cmd exe functions
 // void	print_arr(char *arr[]);
