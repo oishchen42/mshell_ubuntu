@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 17:24:02 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/29 18:54:06 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/29 23:52:24 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ void	minishell_pwd(void)
 	free(cwd);
 }
 
-void	minishell_cd(char **split)
+void	minishell_cd(char **split, t_mshell_data *data)
 {
-	if (!split[1] || ft_strncmp(split[1], "~", 1) == 0)
-		printf("TODO: cd to $HOME\n");
+	if (!split[1])
+		chdir(ft_getenv("HOME", data->env));
 	else
 		chdir(split[1]);
 }

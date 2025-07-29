@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 13:34:42 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/29 18:46:35 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/29 23:48:04 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int		wait_for_child_procs(int pids[], int size);
 
 int		parse_builtin(t_command cmd, t_mshell_data *data);
 void	minishell_pwd(void);
-void	minishell_cd(char **split);
+void	minishell_cd(char **split, t_mshell_data *data);
 int		minishell_echo(char **split);
 void	minishell_env(t_mshell_data *data);
 int		minishell_export(char **split, t_mshell_data *data);

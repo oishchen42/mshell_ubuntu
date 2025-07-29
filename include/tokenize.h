@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 00:09:10 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/29 10:32:58 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/29 23:50:15 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ int				skip_whitespace(const char *input, int i, int len);
 t_command		*create_commands_from_tokens(t_token *tokens, int *n_cmds,
 					char **envp);
 char			*expand_variables(const char *str, char **envp);
+char			*ft_getenv(const char *name, char **envp);
 void			free_tokens(t_token *tokens);
 void			free_commands(t_command *cmds, int n_cmds);
 
