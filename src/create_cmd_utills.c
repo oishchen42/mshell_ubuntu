@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 00:02:35 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/29 23:50:37 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/30 00:00:25 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ t_command	create_command_from_tokens(t_token *tokens, int start, char **envp)
 			i += 2;
 			continue ;
 		}
-		if (tokens[i].quote_state == QUOTE_NONE && ft_strncmp(tokens[i].content, "~", 1) == 0)
+		if (tokens[i].quote_state == QUOTE_NONE && (ft_strncmp(tokens[i].content, "~", 2) == 0 || ft_strncmp(tokens[i].content, "~/", 2) == 0))
 			cmd.args[arg_index] = ft_strjoin(ft_getenv("HOME", envp), &(tokens[i].content)[1]);
 		else if (tokens[i].quote_state != QUOTE_SINGLE && ft_strchr(tokens[i].content, '$'))
 			cmd.args[arg_index] = expand_variables(tokens[i].content, envp);
