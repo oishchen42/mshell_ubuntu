@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 13:34:42 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/29 10:35:01 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/29 18:46:35 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ int		is_builtin(t_command cmd);
 int		parse_cmd(char *cmd, t_mshell_data *data);
 
 /* main logic to run commands */
-int		run_pipex(t_mshell_data *mshell_struct);
-void	run_cmd(t_command cmd, t_mshell_data *mshell_struct);
+int		run_cmds(t_mshell_data *mshell_struct);
+void	run_single_cmd(t_command cmd, t_mshell_data *mshell_struct);
 
 /* some helper functions to get environment vars and executable commands */
 char	*get_exec_cmd(char *cmd, char **env, int *err_code);

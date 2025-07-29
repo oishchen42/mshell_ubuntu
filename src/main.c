@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 12:02:33 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/29 10:38:13 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/29 18:47:17 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	main(int argc, char *argv[], char *envp[])
 			free(cmd);
 		if (!data.commands)
 			break ;
-		status = run_pipex(&data);
+		status = run_cmds(&data);
 		free_commands(data.commands, data.n_cmds);
 		if (!data.status)
 		{

@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:42:03 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/28 21:45:24 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/29 18:47:48 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	restore_std_fds(int saved_stdin, int saved_stdout)
 	close(saved_stdout);
 }
 
-int	run_pipex(t_mshell_data *mshell_struct)
+int	run_cmds(t_mshell_data *mshell_struct)
 {
 	int		**pipes;
 	pid_t	*pids;
@@ -79,7 +79,7 @@ int	run_pipex(t_mshell_data *mshell_struct)
 				close(pipes[j][WRITE_END]);
 				j++;
 			}
-			run_cmd(mshell_struct->commands[i], mshell_struct);
+			run_single_cmd(mshell_struct->commands[i], mshell_struct);
 			exit(EXIT_FAILURE);
 		}
 		i++;
@@ -99,7 +99,7 @@ int	run_pipex(t_mshell_data *mshell_struct)
 	return (status);
 }
 
-void	run_cmd(t_command command, t_mshell_data *mshell_struct)
+void	run_single_cmd(t_command command, t_mshell_data *mshell_struct)
 {
 	char	*cmd;
 	int		err_code;
