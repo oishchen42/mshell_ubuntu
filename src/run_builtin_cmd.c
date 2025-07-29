@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 17:24:02 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/28 21:34:29 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/29 18:54:06 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ int	minishell_echo(char **split)
 	while (split[i])
 	{
 		printf("%s", split[i]);
+		if (split[i + 1] != NULL)
+			printf(" ");
 		i++;
 	}
 	if (newline)
