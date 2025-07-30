@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 00:02:31 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/28 11:16:59 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/30 17:02:57 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,7 @@ static t_token	create_token(const char *input, int start, int end,
 	new_token.quote_state = token_quote;
 	new_token.redir_type = REDIR_NONE;
 	new_token.is_pipe = 0;
+	new_token.ends_with_space = input[end] && ft_isspace(input[end]);
 	if (token_quote != QUOTE_NONE)
 	{
 		start++;

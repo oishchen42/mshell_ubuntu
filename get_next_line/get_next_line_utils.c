@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 18:19:28 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/03/17 12:15:34 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/30 09:00:27 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,18 +42,6 @@ char	*ft_strljoin(char const *s1, char const *s2, size_t l)
 	ft_strlcpy(res, s1, len1 + 1);
 	ft_strlcpy(res + len1, s2, l + 1);
 	return (res);
-}
-
-int	ft_strlen(const char *s)
-{
-	int	len;
-
-	if (!s)
-		return (0);
-	len = 0;
-	while (s[len])
-		len++;
-	return (len);
 }
 
 void	*ft_memset(void *b, int c, size_t len)

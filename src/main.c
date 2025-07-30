@@ -6,11 +6,12 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 12:02:33 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/29 18:47:17 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/30 22:01:19 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "../get_next_line/get_next_line.h"
 
 static char	*get_promt(void);
 static char	*get_curr_dir(void);
@@ -19,7 +20,7 @@ int	main(int argc, char *argv[], char *envp[])
 {
 	char			*cmd;
 	char			*promt;
-	int				status;
+	// int				status;
 	t_mshell_data	data;
 
 	(void) argc;
@@ -27,11 +28,25 @@ int	main(int argc, char *argv[], char *envp[])
 	(void) envp;
 	if (init_data_env(&data, envp) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
+	data.exit_code = 0;
 	set_signals();
 	while (1)
 	{
 		promt = get_promt();
-		cmd = readline(promt);
+		if (isatty(fileno(stdin)))
+			cmd = readline(promt);
+		else
+		{
+			char *line;
+			line = get_next_line(fileno(stdin));
+			if (!line)
+			{
+				cmd = NULL;
+				break ;
+			}
+			cmd = ft_strtrim(line, "\n");
+			free(line);
+		}
 		if (promt)
 			free(promt);
 		if (!check_quote_balance(cmd))
@@ -47,19 +62,19 @@ int	main(int argc, char *argv[], char *envp[])
 			free(cmd);
 		if (!data.commands)
 			break ;
-		status = run_cmds(&data);
+		run_cmds(&data);
 		free_commands(data.commands, data.n_cmds);
-		if (!data.status)
-		{
-			printf("WE ARE IN DATA ERASER\n"); // DELETE
-			free_split(data.env);
-			break ;
-		}
+		// if (!data.status)
+		// {
+		// 	printf("WE ARE IN DATA ERASER\n"); // DELETE
+		// 	free_split(data.env);
+		// 	break ;
+		// }
 	}
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
+	// if (WIFEXITED(status))
+	// 	return (WEXITSTATUS(status));
 	rl_clear_history();
-	return (0);
+	return (data.exit_code);
 }
 
 static char	*get_promt(void)

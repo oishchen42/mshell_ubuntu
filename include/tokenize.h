@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 00:09:10 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/29 23:50:15 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/30 17:01:53 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_token
 	int		quote_state;
 	int		redir_type;
 	int		is_pipe;
+	int		ends_with_space;
 }	t_token;
 
 typedef struct s_redir
@@ -84,5 +85,7 @@ int				add_redirection(t_list **redirections, t_token *tokens, int i);
 t_redir_type	get_redir_type(const char *token);
 void			print_redirections(t_list *redirections);
 void			free_redir_content(void *content);
+
+int				ft_isspace(char c);
 
 #endif

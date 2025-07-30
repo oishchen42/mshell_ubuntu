@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 18:19:33 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/07 09:20:09 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/30 09:03:17 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stdlib.h>
 # include <unistd.h>
+# include "libft.h"
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 256
@@ -29,7 +30,6 @@ char	*join_and_free(char *s, char *buffer, size_t *start, ssize_t end);
 char	*ft_free(char *str);
 ssize_t	find_eol(char *s, size_t start);
 
-int		ft_strlen(const char *s);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 char	*ft_strljoin(char const *s1, char const *s2, size_t l);
 void	*ft_memset(void *b, int c, size_t len);

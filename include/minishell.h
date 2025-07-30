@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 13:34:42 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/29 23:48:04 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/30 21:18:56 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_mshell_data
 	t_command	*commands;
 	int			n_cmds;
 	int			status;
+	int			exit_code;
 }	t_mshell_data;
 
 int		is_builtin(t_command cmd);
@@ -57,12 +58,12 @@ void	handle_redirections(t_list *redirs);
 int		wait_for_child_procs(int pids[], int size);
 
 int		parse_builtin(t_command cmd, t_mshell_data *data);
-void	minishell_pwd(void);
-void	minishell_cd(char **split, t_mshell_data *data);
+int		minishell_pwd(void);
+int		minishell_cd(char **split, t_mshell_data *data);
 int		minishell_echo(char **split);
-void	minishell_env(t_mshell_data *data);
+int		minishell_env(t_mshell_data *data);
 int		minishell_export(char **split, t_mshell_data *data);
-void	minishell_exit(t_mshell_data *data, int exit_code);
+void	minishell_exit(char **cmd, t_mshell_data *data);
 int		minishell_unset(char **split, t_mshell_data *data);
 
 // signals
