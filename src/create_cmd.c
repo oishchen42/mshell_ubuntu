@@ -1,36 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   create_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:11:02 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/28 12:22:38 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/29 10:37:08 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_pipex	*init_pipex(char *cmd, char *envp[])
+int	parse_cmd(char *cmd, t_mshell_data *data)
 {
-	t_pipex	*new_pipex;
+	t_token	*tokens;
 
-	(void ) envp;
-	new_pipex = (t_pipex *)malloc(sizeof(t_pipex));
-	if (!new_pipex)
-		return (NULL);
-	new_pipex->infile = NULL;
-	new_pipex->commands = create_commands_from_tokens(tokenize(cmd), &new_pipex->n_cmds, envp);
-	if (!new_pipex->commands)
-	{
-		free_pipex(new_pipex);
-		return (NULL);
-	}
-	new_pipex->infile = NULL;
-	new_pipex->outfile = NULL;
-	new_pipex->is_heredoc = 0;
-	return (new_pipex);
+	data->commands = NULL;
+	data->n_cmds = 0;
+	tokens = tokenize(cmd);
+	if (!tokens)
+		return (0);
+	data->commands = create_commands_from_tokens(tokens, &data->n_cmds,
+			data->env);
+	free_tokens(tokens);
+	if (!data->commands)
+		return (0);
+	return (1);
 }
 
 int	wait_for_child_procs(int pids[], int size)
@@ -49,12 +45,5 @@ int	wait_for_child_procs(int pids[], int size)
 			waitpid(pids[i], NULL, 0);
 		i++;
 	}
-	free(pids);
 	return (status);
-}
-
-void	close_pipe(int fd[2])
-{
-	close(fd[READ_END]);
-	close(fd[WRITE_END]);
 }

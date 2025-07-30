@@ -6,13 +6,13 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 16:45:55 by oishchen          #+#    #+#             */
-/*   Updated: 2025/07/21 19:58:43 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/28 21:40:00 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_mshell_data *add_env(t_mshell_data *data, char *keyvalue, int	key_idx)
+static t_mshell_data	*add_env(t_mshell_data *data, char *keyvalue, int key_idx)
 {
 	if ((unsigned int)key_idx < data->env_len)
 		free(data->env[key_idx]);
@@ -65,6 +65,6 @@ int	minishell_export(char **split, t_mshell_data *data)
 			return (ft_putendl_fd("export: not valid in this context", 2), EXIT_FAILURE);
 	}
 	if (!split[1])
-		print_env(data);
+		minishell_env(data);
 	return (EXIT_SUCCESS);
-} 
+}

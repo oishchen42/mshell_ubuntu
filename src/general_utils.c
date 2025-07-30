@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 15:41:03 by oishchen          #+#    #+#             */
-/*   Updated: 2025/07/20 13:35:19 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/28 21:38:51 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,9 @@ int	is_valid_key(char *key_value, int separator)
 	{
 		i++;
 		while (key_value[i] && (ft_isalnum(key_value[i]) || key_value[i] == '_'))
-				i++;
+			i++;
 		if (key_value[i] == separator)
-				return (1);
+			return (1);
 	}
 	return (0);
 }

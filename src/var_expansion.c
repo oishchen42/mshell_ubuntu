@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 23:43:39 by zirael            #+#    #+#             */
-/*   Updated: 2025/07/28 12:13:00 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/29 23:48:39 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 static int	expand_one_variable(const char *str, char **envp,
 				t_buffer *buffer, size_t *j);
 static int	ensure_buffer_capacity(t_buffer *buffer, size_t needed);
-static char	*ft_getenv(const char *name, char **envp);
 
 static int	is_var_char(int c)
 {
@@ -79,7 +78,7 @@ static int	expand_one_variable(const char *str, char **envp,
 	return (end);
 }
 
-static char	*ft_getenv(const char *name, char **envp)
+char	*ft_getenv(const char *name, char **envp)
 {
 	int		i;
 	int		name_len;

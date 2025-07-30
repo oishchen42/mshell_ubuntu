@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:45:05 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/28 12:14:00 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/29 10:46:18 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	handle_heredoc(char *heredoc_name, const char *delimiter)
 		exit_with_error("Error creating heredoc file", NULL, EXIT_FAILURE);
 	while (1)
 	{
-		write(STDOUT_FILENO, "> ", 2); 
+		write(STDOUT_FILENO, "> ", 2);
 		next_line = ft_getline();
 		if (!next_line)
 			break ;

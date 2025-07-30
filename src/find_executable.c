@@ -6,13 +6,16 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 18:47:11 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/13 21:44:32 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/25 13:27:56 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*find_path(char **env)
+static char	*get_path_to(char *cmd, char *path);
+static char	*find_path(char **env);
+
+static char	*find_path(char **env)
 {
 	while (*env)
 	{
@@ -48,7 +51,7 @@ char	*get_exec_cmd(char *cmd, char **env, int *err_code)
 	return (get_path_to(cmd_ext, path));
 }
 
-char	*get_path_to(char *cmd, char *path)
+static char	*get_path_to(char *cmd, char *path)
 {
 	char	**split_paths;
 	char	*exec;
@@ -78,19 +81,19 @@ char	*get_path_to(char *cmd, char *path)
 void	exit_with_error(const char *msg, const char *obj, int exit_code)
 {
 	if (!obj)
-		printf("pipex: %s\n", msg);
+		printf("pipe: %s\n", msg);
 	else
-		printf("pipex: %s: %s\n", obj, msg);
+		printf("pipe: %s: %s\n", obj, msg);
 	exit (exit_code);
 }
 
 void	exit_with_error_and_free(const char *msg, char **obj, int exit_code)
 {
 	if (!obj)
-		printf("pipex: %s\n", msg);
+		printf("pipe: %s\n", msg);
 	else
 	{
-		printf("pipex: %s: %s\n", obj[0], msg);
+		printf("pipe: %s: %s\n", obj[0], msg);
 		free_split(obj);
 	}
 	exit (exit_code);

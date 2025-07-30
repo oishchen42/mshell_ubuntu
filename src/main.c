@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 12:02:33 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/28 12:23:03 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/29 18:47:17 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,27 +40,25 @@ int	main(int argc, char *argv[], char *envp[])
 			free(cmd);
 			continue ;
 		}
-		data.pipex = init_pipex(cmd, data.env);
+		if (should_add_to_history(cmd))
+			add_history(cmd);
+		parse_cmd(cmd, &data);
 		if (cmd)
-		{
-			if (should_add_to_history(cmd))
-				add_history(cmd);
 			free(cmd);
-		}
-		if (!data.pipex)
+		if (!data.commands)
 			break ;
-		status = run_pipex(&data);
-		free_pipex(data.pipex);
+		status = run_cmds(&data);
+		free_commands(data.commands, data.n_cmds);
 		if (!data.status)
 		{
 			printf("WE ARE IN DATA ERASER\n"); // DELETE
 			free_split(data.env);
 			break ;
 		}
-	}	
+	}
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
-	clear_history(); // TODO: change to rl_clear_history() if def at school
+	rl_clear_history();
 	return (0);
 }
 
@@ -104,34 +102,4 @@ static char	*get_curr_dir(void)
 	curr_dir = ft_strjoin(split[i - 1], "");
 	free_split(split);
 	return (curr_dir);
-}
-
-int	parse_builtin(t_command cmd, t_mshell_data *data)
-{
-	// printf("Parsing ...%s...\n", cmd);
-	if (!cmd.args)
-		return (FAIL);
-	if (ft_strncmp(cmd.args[0], "cd", 3) == 0)
-		minishell_cd(cmd.args);
-	else if (ft_strncmp(cmd.args[0], "pwd", 4) == 0)
-		minishell_pwd();
-	else if (ft_strncmp(cmd.args[0], "env", 4) == 0)
-		print_env(data);
-	else if (ft_strncmp(cmd.args[0], "echo", 5) == 0)
-		minishell_echo(cmd.args);
-	else if (ft_strncmp(cmd.args[0], "export", 7) == 0)
-		minishell_export(cmd.args, data);
-	else if (ft_strncmp(cmd.args[0], "exit", 5) == 0)
-		minishell_exit(data, 0);
-	else if (ft_strncmp(cmd.args[0], "unset", 5) == 0)
-		minishell_unset(cmd.args, data);
-	else
-	{
-		// free_split(data->env);
-		return (CMD_NOT_FOUND);
-	}
-	// if (!data->status)
-	// 	free_split(data->env);
-	// free_split(split);
-	return (SUCCESS);
 }
