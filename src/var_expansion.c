@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 23:43:39 by zirael            #+#    #+#             */
-/*   Updated: 2025/07/31 00:25:17 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/31 20:15:15 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,12 @@ static int	expand_one_variable(const char *str, char **envp,
 static int	ensure_buffer_capacity(t_buffer *buffer, size_t needed);
 static int	get_exit_code(int exit_code, t_buffer *result, size_t *j);
 
-static int	is_var_char(int c)
+static int	is_var_start_char(int c) 
+{
+	return (ft_isalpha(c) || c == '_');
+}
+
+static int	is_var_body_char(int c)
 {
 	return (ft_isalnum(c) || c == '_');
 }
@@ -36,7 +41,7 @@ char	*expand_variables(const char *str, t_mshell_data *data)
 	j = 0;
 	while (str[i])
 	{
-		if (str[i] == '$' && str[i + 1] && is_var_char(str[i + 1]))
+		if (str[i] == '$' && str[i + 1] && is_var_start_char(str[i + 1]))
 			i += expand_one_variable(&str[i], data->env, &result, &j);
 		else if (str[i] == '$' && str[i + 1] == '?')
 			i += get_exit_code(data->exit_code, &result, &j);
@@ -78,7 +83,7 @@ static int	expand_one_variable(const char *str, char **envp,
 	size_t	var_len;
 
 	end = 1;
-	while (is_var_char(str[end]))
+	while (is_var_body_char(str[end]))
 		end++;
 	var_name = ft_substr(str, 1, end - 1);
 	if (!var_name)

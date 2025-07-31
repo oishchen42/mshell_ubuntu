@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 15:41:03 by oishchen          #+#    #+#             */
-/*   Updated: 2025/07/28 21:38:51 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/31 20:06:45 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,17 +90,17 @@ int	init_data_env(t_mshell_data *data, char **envp)
 
 int	is_valid_key(char *key_value, int separator)
 {
-	int		i;
+	int	i;
 
 	i = 0;
-	if (ft_isalpha(key_value[i]) || key_value[i] == '_')
-	{
+	(void )separator;
+	if (!ft_isalpha(key_value[i]) && key_value[i] != '_')
+		return (0);
+	i++;
+	while (key_value[i] && (ft_isalnum(key_value[i]) || key_value[i] == '_'))
 		i++;
-		while (key_value[i] && (ft_isalnum(key_value[i]) || key_value[i] == '_'))
-			i++;
-		if (key_value[i] == separator)
-			return (1);
-	}
+	if (key_value[i] == '=' || key_value[i] == '\0')
+		return (1);
 	return (0);
 }
 
