@@ -6,11 +6,11 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 16:44:39 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/28 21:35:21 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/30 16:54:01 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-static int	ft_isspace(char c);
+int	ft_isspace(char c);
 
 int	should_add_to_history(const char *line)
 {
@@ -25,7 +25,7 @@ int	should_add_to_history(const char *line)
 	return (0);
 }
 
-static int	ft_isspace(char c)
+int	ft_isspace(char c)
 {
 	return (c == ' ' || c == '\t' || c == '\n'
 		|| c == '\v' || c == '\f' || c == '\r');

@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 15:38:39 by oishchen          #+#    #+#             */
-/*   Updated: 2025/07/28 21:38:07 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/30 22:03:28 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,22 +40,29 @@ int	minishell_unset(char **split, t_mshell_data *data)
 
 	i = 1;
 	if (!split[i])
-		return (ft_putendl_fd("unset: not enough arguments", 2), EXIT_FAILURE);
+	{
+		ft_putstr_fd("unset: not enough arguments\n", STDERR_FILENO);
+		return (1);
+	}
 	while (split[i])
 	{
 		if (!is_valid_key(split[i], '\0'))
-			return (ft_putendl_fd("unset: invalid parameter name", 2), EXIT_FAILURE);
+		{
+			ft_putendl_fd("unset: invalid parameter name", STDERR_FILENO);
+			return (1);
+		}
 		key_idx = find_env(split[i], data, '\0');
 		if (key_idx == -1 || (unsigned int)key_idx >= data->env_len)
-			return (ft_putendl_fd("Error: KEY was not found", 2), EXIT_FAILURE);
+			return (0);
 		data->env = delete_and_shift_env(data, key_idx);
 		if (!data->env)
 		{
 			printf("NO DATA->ENV in unset\n");
-			data->status = 0;
-			return (ft_putendl_fd("Error: unset failed", 2), EXIT_FAILURE);
+			// data->status = 0;
+			ft_putendl_fd("Error: unset failed", STDERR_FILENO);
+			return (1);
 		}
 		i++;
 	}
-	return (EXIT_SUCCESS);
+	return (0);
 }
