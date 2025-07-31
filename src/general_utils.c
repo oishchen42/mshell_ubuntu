@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 15:41:03 by oishchen          #+#    #+#             */
-/*   Updated: 2025/07/31 20:06:45 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/08/01 00:07:13 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	find_env(char *keyvalue, t_mshell_data *data, int separator)
 	char	*key_end;
 
 	key_end = ft_strchr(keyvalue, separator);
-	if (key_end[0] != separator)
+	if (key_end && key_end[0] != separator)
 		return (-1);
 	key = ft_substr(keyvalue, 0, key_end - keyvalue);
 	if (!key)
@@ -52,6 +52,7 @@ t_mshell_data	*ft_realloc(t_mshell_data *data, char **envp)
 	new_env = malloc(sizeof(char *) * new_env_len);
 	if (!new_env)
 		return (NULL);
+	ft_bzero(new_env, sizeof(char *) * new_env_len);
 	i = -1;
 	while (++i != data->max_env_len)
 	{
