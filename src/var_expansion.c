@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 23:43:39 by zirael            #+#    #+#             */
-/*   Updated: 2025/07/29 23:48:39 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/31 00:25:17 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,14 @@
 static int	expand_one_variable(const char *str, char **envp,
 				t_buffer *buffer, size_t *j);
 static int	ensure_buffer_capacity(t_buffer *buffer, size_t needed);
+static int	get_exit_code(int exit_code, t_buffer *result, size_t *j);
 
 static int	is_var_char(int c)
 {
 	return (ft_isalnum(c) || c == '_');
 }
 
-char	*expand_variables(const char *str, char **envp)
+char	*expand_variables(const char *str, t_mshell_data *data)
 {
 	t_buffer	result;
 	int			i;
@@ -36,7 +37,9 @@ char	*expand_variables(const char *str, char **envp)
 	while (str[i])
 	{
 		if (str[i] == '$' && str[i + 1] && is_var_char(str[i + 1]))
-			i += expand_one_variable(&str[i], envp, &result, &j);
+			i += expand_one_variable(&str[i], data->env, &result, &j);
+		else if (str[i] == '$' && str[i + 1] == '?')
+			i += get_exit_code(data->exit_code, &result, &j);
 		else
 		{
 			if (!ensure_buffer_capacity(&result, j + 1))
@@ -46,6 +49,24 @@ char	*expand_variables(const char *str, char **envp)
 	}
 	result.str[j] = '\0';
 	return (result.str);
+}
+
+static int	get_exit_code(int exit_code, t_buffer *result, size_t *j)
+{
+	char 	*status_str;
+	int		var_len;
+
+	status_str = ft_itoa(exit_code);
+	var_len = ft_strlen(status_str);
+	if (!ensure_buffer_capacity(result, *j + var_len))
+	{
+		free(status_str);
+		return (-1);
+	}
+    ft_strlcpy(result->str + *j, status_str, var_len + 1);
+	free(status_str);
+	*j += var_len;
+	return (2);
 }
 
 static int	expand_one_variable(const char *str, char **envp,

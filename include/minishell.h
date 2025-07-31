@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 13:34:42 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/30 21:18:56 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/31 19:26:06 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,6 @@
 # define FAIL 1
 # define SUCCESS 0
 # define CMD_NOT_FOUND -1
-
-typedef struct s_mshell_data
-{
-	char		**env;
-	size_t		max_env_len;
-	size_t		env_len;
-	t_command	*commands;
-	int			n_cmds;
-	int			status;
-	int			exit_code;
-}	t_mshell_data;
 
 int		is_builtin(t_command cmd);
 

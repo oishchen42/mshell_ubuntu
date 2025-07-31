@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 00:02:35 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/30 17:24:12 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/31 19:26:35 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,13 @@ int	count_tokens_until_pipe(t_token *tokens, int start)
 /**
  * Creates a command array from tokens (until pipe or end)
  */
-t_command	create_command_from_tokens(t_token *tokens, int start, char **envp)
+t_command	create_command_from_tokens(t_token *tokens, int start, t_mshell_data *data)
 {
 	t_command	cmd;
 	int			i;
 	int			arg_index;
 	int			token_count;
+	char		*str;
 
 	cmd.args = NULL;
 	token_count = count_tokens_until_pipe(tokens, start);
@@ -62,16 +63,27 @@ t_command	create_command_from_tokens(t_token *tokens, int start, char **envp)
 		}
 		if (tokens[i].quote_state == QUOTE_NONE && (ft_strncmp(tokens[i].content, "~", 2) == 0
 				|| ft_strncmp(tokens[i].content, "~/", 2) == 0))
-			cmd.args[arg_index] = ft_strjoin(ft_getenv("HOME", envp), &(tokens[i].content)[1]);
+			str = ft_strjoin(ft_getenv("HOME", data->env), &(tokens[i].content)[1]);
 		else if (tokens[i].quote_state != QUOTE_SINGLE && ft_strchr(tokens[i].content, '$'))
-			cmd.args[arg_index] = expand_variables(tokens[i].content, envp);
-		else
 		{
-			if (!cmd.args[arg_index])
-				cmd.args[arg_index] = ft_strdup(tokens[i].content);
-			else
-				cmd.args[arg_index] = ft_strjoin(cmd.args[arg_index], tokens[i].content);
+			str = expand_variables(tokens[i].content, data);
+			if (str && !tokens[i].ends_with_space && tokens[i + 1].content) //suppress last dollar sign if there is next token without space
+			{
+				int len = ft_strlen(str);
+				if (str[len - 1] == '$')
+					str[len - 1] = '\0';
+			}
 		}
+		else
+			str = ft_strdup(tokens[i].content);
+		if (cmd.args[arg_index])
+		{
+
+			cmd.args[arg_index] = ft_strjoin(cmd.args[arg_index], str);
+			free(str);
+		}	
+		else
+			cmd.args[arg_index] = str;
 		if (!cmd.args[arg_index])
 		{
 			perror("minishell: strdup");
@@ -106,7 +118,7 @@ int	count_pipes(t_token *tokens)
  * Creates commands array from tokens and returns number of commands
  * Returns NULL on error, sets n_cmds to 0
  */
-t_command	*create_commands_from_tokens(t_token *tokens, int *n_cmds, char **envp)
+t_command	*create_commands_from_tokens(t_token *tokens, int *n_cmds, t_mshell_data *data)
 {
 	int			token_index;
 	int			cmd_index;
@@ -129,7 +141,7 @@ t_command	*create_commands_from_tokens(t_token *tokens, int *n_cmds, char **envp
 	cmd_index = 0;
 	while (tokens[token_index].content && cmd_index < *n_cmds)
 	{
-		commands[cmd_index] = create_command_from_tokens(tokens, token_index, envp);
+		commands[cmd_index] = create_command_from_tokens(tokens, token_index, data);
 		if (!commands[cmd_index].args)
 		{
 			free_commands(commands, cmd_index);

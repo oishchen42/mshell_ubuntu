@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 17:24:02 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/30 21:59:07 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/31 12:34:13 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,10 @@ int	minishell_echo(char **split)
 
 	i = 1;
 	newline = 1;
-	if (split[i] && ft_strncmp(split[i], "-n", 3) == 0)
+	while (split[i] && ft_strncmp(split[i], "-n", 3) == 0)
 	{
 		newline = 0;
-		i = 2;
+		i++;
 	}
 	while (split[i])
 	{
