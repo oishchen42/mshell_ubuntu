@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 00:02:35 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/31 23:56:27 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/08/01 09:45:58 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,6 +185,7 @@ void	free_commands(t_command *cmds, int n_cmds)
 	while (i < n_cmds)
 	{
 		free_command(&cmds[i]);
+		ft_lstclear(&(cmds[i]).redirections, free_redir_content);
 		i++;
 	}
 	free(cmds);
