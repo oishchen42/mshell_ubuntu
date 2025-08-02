@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 12:02:33 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/31 23:41:34 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/08/01 23:24:38 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	main(int argc, char *argv[], char *envp[])
 	while (1)
 	{
 		// promt = get_promt();
-		if (0)//isatty(fileno(stdin)))
+		if (isatty(fileno(stdin)))
 			cmd = readline(promt);
 		else
 		{

@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 00:02:35 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/08/01 09:45:58 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/08/01 23:46:14 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,13 @@ t_command	create_command_from_tokens(t_token *tokens, int start, t_mshell_data *
 		{
 			char *old_cmd = cmd.args[arg_index];
 			cmd.args[arg_index] = ft_strjoin(old_cmd, str);
-			free (old_cmd);
-		}	
+			free(old_cmd);
+		}
 		else
-			cmd.args[arg_index] = ft_strdup(str);
+		{
+			cmd.args[arg_index] = str;
+			str = NULL;
+		}
 		if (str)
 			free (str);
 		if (!cmd.args[arg_index])
@@ -92,7 +95,7 @@ t_command	create_command_from_tokens(t_token *tokens, int start, t_mshell_data *
 			free_command(&cmd);
 			return (cmd);
 		}
-		if (tokens[i].ends_with_space || !tokens[i + 1].content)
+		if (tokens[i].ends_with_space || !tokens[i + 1].content || tokens[i+1].is_pipe)
 			arg_index++;
 		i++;
 	}
