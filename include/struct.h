@@ -6,13 +6,12 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 12:47:52 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/31 19:25:45 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/31 19:44:09 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCT_H
 # define STRUCT_H
-
 
 # include "libft.h"
 
