@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 16:45:55 by oishchen          #+#    #+#             */
-/*   Updated: 2025/08/03 21:10:17 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/08/03 23:30:02 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	add_env(t_mshell_data *data, char *keyvalue)
 	if (!data->env[key_idx])
 	{
 		free_env(data);
-		return(0);
+		return (0);
 	}
 	return (1);
 }
@@ -66,4 +66,15 @@ int	minishell_export(char **split, t_mshell_data *data)
 		i++;
 	}
 	return (exit_code);
+}
+
+void	free_env(t_mshell_data *data)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < data->env_len)
+		free(data->env[i++]);
+	if (data->env)
+		free(data->env);
 }

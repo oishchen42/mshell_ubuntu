@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 15:38:39 by oishchen          #+#    #+#             */
-/*   Updated: 2025/08/03 23:02:02 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/08/03 23:28:45 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ static char	**delete_and_shift_env(t_mshell_data *data, int key_idx)
 {
 	size_t	i;
 
-	if (key_idx < 0 || (unsigned int) key_idx >= data->env_len || !data->env[key_idx])
+	if (key_idx < 0 || (unsigned int) key_idx >= data->env_len
+		|| !data->env[key_idx])
 		return (NULL);
 	free(data->env[key_idx]);
 	i = (unsigned int)key_idx;

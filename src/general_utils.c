@@ -6,13 +6,13 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 15:41:03 by oishchen          #+#    #+#             */
-/*   Updated: 2025/08/03 21:09:14 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/08/03 23:29:43 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	find_env(char *keyvalue,  char **env)
+int	find_env(char *keyvalue, char **env)
 {
 	size_t	i;
 	char	*key_end;
@@ -26,21 +26,20 @@ int	find_env(char *keyvalue,  char **env)
 	return (i);
 }
 
-int find_env_by_key(char *key, char **env, int key_len)
+int	find_env_by_key(char *key, char **env, int key_len)
 {
-    size_t  i;
+	size_t	i;
 
-    if (!key)
-        return (-1);
-    i = 0;
-    while (env[i])
-    {
-        if (ft_strncmp(env[i], key, key_len) == 0 && 
-            env[i][key_len] == '=')
-            return (i);
-        i++;
-    }
-    return (i);
+	if (!key)
+		return (-1);
+	i = 0;
+	while (env[i])
+	{
+		if (ft_strncmp(env[i], key, key_len) == 0 && env[i][key_len] == '=')
+			return (i);
+		i++;
+	}
+	return (i);
 }
 
 char	**ft_realloc(char **env, size_t *buffer_size)
@@ -110,15 +109,4 @@ int	is_valid_key(char *key_value)
 	if (key_value[i] == '=' || key_value[i] == '\0')
 		return (1);
 	return (0);
-}
-
-void	free_env(t_mshell_data *data)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < data->env_len)
-		free(data->env[i++]);
-	if (data->env)
-		free(data->env);
 }
