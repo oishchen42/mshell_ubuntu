@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 13:34:42 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/08/03 21:09:59 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/08/04 17:33:01 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,9 @@ char	**ft_realloc(char **env, size_t *buffer_size);
 */
 int		init_data_env(t_mshell_data *data, char **envp);
 
-int		is_valid_key(char *key_value);
+int		is_var_start_char(int c);
+int		is_var_body_char(int c);
+int		is_valid_key(char *key_value, int is_export);
 
 int		should_add_to_history(const char *line);
 

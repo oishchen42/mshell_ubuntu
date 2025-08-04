@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 15:41:03 by oishchen          #+#    #+#             */
-/*   Updated: 2025/08/03 23:29:43 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/08/05 00:17:46 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,23 @@
 int	find_env(char *keyvalue, char **env)
 {
 	size_t	i;
+	int		key_len;
 	char	*key_end;
 
 	if (!keyvalue || !env)
 		return (-1);
-	key_end = ft_strchr(keyvalue, '=');
-	if (!key_end)
-		return (-1);
-	i = find_env_by_key(keyvalue, env, key_end - keyvalue);
+
+	key_end = ft_strnstr(keyvalue, "+=", ft_strlen(keyvalue));
+	if (key_end)
+        key_len = key_end - keyvalue;
+	else
+	{
+		key_end = ft_strchr(keyvalue, '=');
+		if (!key_end)
+			return (-1);
+		key_len = key_end - keyvalue;
+	}
+	i = find_env_by_key(keyvalue, env, key_len);
 	return (i);
 }
 
@@ -96,17 +105,19 @@ int	init_data_env(t_mshell_data *data, char **envp)
 	return (EXIT_SUCCESS);
 }
 
-int	is_valid_key(char *key_value)
+int	is_valid_key(char *key_value, int is_export)
 {
 	int	i;
 
 	i = 0;
-	if (!ft_isalpha(key_value[i]) && key_value[i] != '_')
+	if (!is_var_start_char(key_value[i]))
 		return (0);
 	i++;
-	while (key_value[i] && (ft_isalnum(key_value[i]) || key_value[i] == '_'))
+	while (key_value[i] && is_var_body_char(key_value[i]))
 		i++;
-	if (key_value[i] == '=' || key_value[i] == '\0')
+	if (key_value[i] == '\0')
+		return (1);
+	if (is_export && (key_value[i] == '=' || ft_strncmp(&key_value[i], "+=", 2) == 0))
 		return (1);
 	return (0);
 }

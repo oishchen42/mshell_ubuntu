@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_utils.c                                      :+:      :+:    :+:   */
+/*   find_executable.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 18:47:11 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/25 13:27:56 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/08/03 23:44:03 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,21 +80,28 @@ static char	*get_path_to(char *cmd, char *path)
 
 void	exit_with_error(const char *msg, const char *obj, int exit_code)
 {
-	if (!obj)
-		printf("pipe: %s\n", msg);
-	else
-		printf("pipe: %s: %s\n", obj, msg);
+	(void )obj;
+	(void )msg;
+	perror("pipe");
+	// if (!obj)
+	// 	printf("pipe: %s\n", msg);
+	// else
+	// 	printf("pipe: %s: %s\n", obj, msg);
 	exit (exit_code);
 }
 
 void	exit_with_error_and_free(const char *msg, char **obj, int exit_code)
 {
-	if (!obj)
-		printf("pipe: %s\n", msg);
-	else
-	{
-		printf("pipe: %s: %s\n", obj[0], msg);
+	(void )msg;
+	perror("pipe");
+	// if (!obj)
+	// 	printf("pipe: %s\n", msg);
+	// else
+	// {
+	// 	printf("pipe: %s: %s\n", obj[0], msg);
+	// 	free_split(obj);
+	// }
+	if (obj)
 		free_split(obj);
-	}
 	exit (exit_code);
 }

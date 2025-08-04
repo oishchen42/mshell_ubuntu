@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 15:38:39 by oishchen          #+#    #+#             */
-/*   Updated: 2025/08/03 23:28:45 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/08/04 17:50:57 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,25 +35,45 @@ int	minishell_unset(char **split, t_mshell_data *data)
 {
 	size_t	i;
 	int		key_idx;
+	int		exit_code;
 
 	i = 1;
-	if (!split[i])
-	{
-		ft_putstr_fd("unset: not enough arguments\n", STDERR_FILENO);
-		return (1);
-	}
+	// if (!split[i])
+	// {
+	// 	ft_putstr_fd("unset: not enough arguments\n", STDERR_FILENO);
+	// 	return (1);
+	// }
+	exit_code = 0;
 	while (split[i])
 	{
-		if (!is_valid_key(split[i]))
+		if (is_valid_key(split[i], 0))
 		{
-			ft_putendl_fd("unset: invalid parameter name", STDERR_FILENO);
-			return (1);
+			exit_code = 0;
+			key_idx = find_env_by_key(split[i], data->env, ft_strlen(split[i]));
+			if (key_idx >= 0 && (unsigned int)key_idx < data->env_len)
+				data->env = delete_and_shift_env(data, key_idx);
 		}
-		key_idx = find_env_by_key(split[i], data->env, ft_strlen(split[i]));
-		if (key_idx == -1 || (unsigned int)key_idx >= data->env_len)
-			return (0);
-		data->env = delete_and_shift_env(data, key_idx);
+		else if (split[i][0] == '-')
+		{
+			exit_code = 2;
+			ft_putendl_fd("minishell: export: invalid option, options not supported", 2);
+		}
+		else
+		{
+			exit_code = 1;
+			ft_putendl_fd("unset: invalid parameter name", STDERR_FILENO);
+		}
 		i++;
 	}
-	return (0);
+	return (exit_code);
+}
+
+int	is_var_start_char(int c)
+{
+	return (ft_isalpha(c) || c == '_');
+}
+
+int	is_var_body_char(int c)
+{
+	return (ft_isalnum(c) || c == '_');
 }
