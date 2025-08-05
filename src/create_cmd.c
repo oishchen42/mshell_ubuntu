@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:11:02 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/31 23:06:35 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/08/05 11:25:01 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,5 @@ int	wait_for_child_procs(int pids[], int size)
 			waitpid(pids[i], NULL, 0);
 		i++;
 	}
-	return (status);
+	return (WEXITSTATUS(status));
 }

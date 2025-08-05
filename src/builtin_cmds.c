@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 14:18:53 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/30 21:40:13 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/08/05 11:53:29 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,5 @@ int	parse_builtin(t_command cmd, t_mshell_data *data)
 		minishell_exit(cmd.args, data);
 	else
 		return (CMD_NOT_FOUND);
-	return (SUCCESS);
+	return (data->exit_code);
 }

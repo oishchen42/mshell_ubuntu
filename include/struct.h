@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 12:47:52 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/31 19:44:09 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/08/05 19:33:36 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,12 @@ typedef struct s_mshell_data
 	int			status;
 	int			exit_code;
 }	t_mshell_data;
+
+typedef struct s_heredoc_fd
+{
+	int		fd;
+	int		is_heredoc;
+	char	*filename;
+}	t_heredoc_fd;
 
 #endif
