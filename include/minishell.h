@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 13:34:42 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/31 20:16:14 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/08/05 19:33:47 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,18 +66,14 @@ void	set_signals();
 /* finds necesarry environment variable in data->env,
 	cases:
 	1) no such env variable
-		returns Last Index
+		returns -1
 	2) env variable is found
 		returns env variable index
 */
-int		find_env(char *keyvalue, t_mshell_data *data, int separator);
+int	find_env(char *keyvalue,  char **env);
+int find_env_by_key(char *key, char **env, int key_len);
 
-/*  realocates the data->env, while increasing it's size (x2);
-	cases:
-	1) failed allocation
-			returns NULL;
-*/
-t_mshell_data	*ft_realloc(t_mshell_data *data, char **envp);
+char	**ft_realloc(char **env, size_t *buffer_size);
 
 /* initialise data variable with by calculating the length of envp
 	and calling ft_realloc cases:
@@ -88,15 +84,9 @@ t_mshell_data	*ft_realloc(t_mshell_data *data, char **envp);
 */
 int		init_data_env(t_mshell_data *data, char **envp);
 
-/* checks the KEY for export and uset
-	cases:
-	1) KEY[0] is anything other than alpha || KEY[i] is anything other
-		than alphanum or '_'
-		returns 0 (false)
-	2) KEY[0] is alpha and KEY[i] is alphanum || KEY[i] is '_'
-		returns 1 (true)
-*/
-int		is_valid_key(char *key_value, int separator);
+int		is_var_start_char(int c);
+int		is_var_body_char(int c);
+int		is_valid_key(char *key_value, int is_export);
 
 int		should_add_to_history(const char *line);
 

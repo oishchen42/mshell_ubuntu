@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 12:02:33 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/08/01 23:24:38 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/08/05 11:25:33 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	main(int argc, char *argv[], char *envp[])
 		if (!cmd)
 		{
 			free_split(data.env);
-			rl_clear_history();   
+			rl_clear_history();
 			exit(data.exit_code);
         }
 		// if (promt)
@@ -69,7 +69,7 @@ int	main(int argc, char *argv[], char *envp[])
 			free(cmd);
 		if (!data.commands)
 			break ;
-		run_cmds(&data);
+		data.exit_code = run_cmds(&data);
 		free_commands(data.commands, data.n_cmds);
 		// if (!data.status)
 		// {
