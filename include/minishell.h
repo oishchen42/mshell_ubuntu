@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: oishchen <oishchen@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 13:34:42 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/08/05 19:33:47 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/08/08 00:05:18 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@
 
 # define FAIL 1
 # define SUCCESS 0
+# define TRUE 1
+# define FALSE 0
 # define CMD_NOT_FOUND -1
 
 int		is_builtin(t_command cmd);
@@ -38,6 +40,7 @@ int		run_cmds(t_mshell_data *mshell_struct);
 void	run_single_cmd(t_command cmd, t_mshell_data *mshell_struct);
 
 /* some helper functions to get environment vars and executable commands */
+char	*ft_getenv(const char *name, char **envp);
 char	*get_exec_cmd(char *cmd, char **env, int *err_code);
 void	exit_with_error(const char *msg, const char *obj, int exit_code);
 void	exit_with_error_and_free(const char *msg, char **obj, int exit_code);
@@ -47,8 +50,9 @@ void	handle_redirections(t_list *redirs);
 int		wait_for_child_procs(int pids[], int size);
 
 int		parse_builtin(t_command cmd, t_mshell_data *data);
-int		minishell_pwd(void);
+int		add_var(t_mshell_data *data, char *keyvalue);
 int		minishell_cd(char **split, t_mshell_data *data);
+int		minishell_pwd(void);
 int		minishell_echo(char **split);
 int		minishell_env(t_mshell_data *data);
 int		minishell_export(char **split, t_mshell_data *data);
@@ -57,6 +61,8 @@ int		minishell_unset(char **split, t_mshell_data *data);
 
 // signals
 void	set_signals();
+
+void 	print_env(char **env); // delete
 
 // cmd exe functions
 // void	print_arr(char *arr[]);

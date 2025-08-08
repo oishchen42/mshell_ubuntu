@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: oishchen <oishchen@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 12:47:52 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/08/05 19:33:36 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/08/08 00:06:03 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,9 @@ typedef struct s_buffer
 typedef struct s_mshell_data
 {
 	char		**env;
+	char		*old_dir;
+	char		*cur_dir;
+	char		*home_dir;
 	size_t		max_env_len;
 	size_t		env_len;
 	t_command	*commands;

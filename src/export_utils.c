@@ -3,20 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: oishchen <oishchen@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 16:45:55 by oishchen          #+#    #+#             */
-/*   Updated: 2025/08/04 23:59:51 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/08/08 00:13:52 by oishchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static char *create_var(char *keyvalue, char *old_var);
-static int	add_var(t_mshell_data *data, char *keyvalue);
 static char	*ft_strdup_skip_plus(const char *s1);
 
-static int	add_var(t_mshell_data *data, char *keyvalue)
+int	add_var(t_mshell_data *data, char *keyvalue)
 {
 	int		key_idx;
 	char	*new_var;
@@ -41,7 +40,7 @@ static int	add_var(t_mshell_data *data, char *keyvalue)
 	data->env[key_idx] = new_var;
 	if (!data->env[key_idx])
 	{
-		free_env(data);
+		free_split(data->env);
 		return (0);
 	}
 	return (1);
@@ -118,15 +117,4 @@ int	minishell_export(char **split, t_mshell_data *data)
 		i++;
 	}
 	return (exit_code);
-}
-
-void	free_env(t_mshell_data *data)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < data->env_len)
-		free(data->env[i++]);
-	if (data->env)
-		free(data->env);
 }
