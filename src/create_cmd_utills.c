@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 00:02:35 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/08/01 23:46:14 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/31 19:26:35 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,24 +78,19 @@ t_command	create_command_from_tokens(t_token *tokens, int start, t_mshell_data *
 			str = ft_strdup(tokens[i].content);
 		if (cmd.args[arg_index])
 		{
-			char *old_cmd = cmd.args[arg_index];
-			cmd.args[arg_index] = ft_strjoin(old_cmd, str);
-			free(old_cmd);
-		}
+
+			cmd.args[arg_index] = ft_strjoin(cmd.args[arg_index], str);
+			free(str);
+		}	
 		else
-		{
 			cmd.args[arg_index] = str;
-			str = NULL;
-		}
-		if (str)
-			free (str);
 		if (!cmd.args[arg_index])
 		{
 			perror("minishell: strdup");
 			free_command(&cmd);
 			return (cmd);
 		}
-		if (tokens[i].ends_with_space || !tokens[i + 1].content || tokens[i+1].is_pipe)
+		if (tokens[i].ends_with_space || !tokens[i + 1].content)
 			arg_index++;
 		i++;
 	}
@@ -188,7 +183,6 @@ void	free_commands(t_command *cmds, int n_cmds)
 	while (i < n_cmds)
 	{
 		free_command(&cmds[i]);
-		ft_lstclear(&(cmds[i]).redirections, free_redir_content);
 		i++;
 	}
 	free(cmds);

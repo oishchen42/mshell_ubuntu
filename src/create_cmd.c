@@ -6,12 +6,11 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:11:02 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/08/05 11:25:01 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/31 00:01:01 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <sys/wait.h>
 
 int	parse_cmd(char *cmd, t_mshell_data *data)
 {
@@ -45,5 +44,5 @@ int	wait_for_child_procs(int pids[], int size)
 			waitpid(pids[i], NULL, 0);
 		i++;
 	}
-	return (WEXITSTATUS(status));
+	return (status);
 }

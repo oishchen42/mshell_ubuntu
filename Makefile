@@ -6,7 +6,7 @@
 #    By: oishchen <oishchen@student.42heilbronn.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: Invalid date        by                   #+#    #+#              #
-#    Updated: 2025/08/08 00:05:39 by oishchen         ###   ########.fr        #
+#    Updated: 2025/08/11 10:11:21 by oishchen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,10 +32,8 @@ SRC_FILES := main.c builtin_cmds.c \
 			run_builtin_cmd.c clean_utils.c export_utils.c general_utils.c \
 			create_cmd.c create_cmd_utills.c run_cmd.c find_executable.c \
 			history_utils.c tokenize.c tokenize_utils.c \
-			redir_init.c redir_handler.c t_mshell_init.c \
-			unset_builtin.c signals.c heredoc_utils.c var_expansion.c \
-			cd_builtin.c
-
+			redir_init.c redir_handler.c \
+      unset_builtin.c signals.c heredoc_utils.c var_expansion.c
 GNL_FILES := get_next_line.c get_next_line_utils.c
 
 # Structure of SRC and OBJ

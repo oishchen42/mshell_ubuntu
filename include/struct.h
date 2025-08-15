@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oishchen <oishchen@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 12:47:52 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/08/08 00:06:03 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/07/31 19:25:45 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCT_H
 # define STRUCT_H
+
 
 # include "libft.h"
 
@@ -63,9 +64,6 @@ typedef struct s_buffer
 typedef struct s_mshell_data
 {
 	char		**env;
-	char		*old_dir;
-	char		*cur_dir;
-	char		*home_dir;
 	size_t		max_env_len;
 	size_t		env_len;
 	t_command	*commands;
@@ -73,12 +71,5 @@ typedef struct s_mshell_data
 	int			status;
 	int			exit_code;
 }	t_mshell_data;
-
-typedef struct s_heredoc_fd
-{
-	int		fd;
-	int		is_heredoc;
-	char	*filename;
-}	t_heredoc_fd;
 
 #endif

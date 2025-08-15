@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_builtin_cmd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oishchen <oishchen@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 17:24:02 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/08/07 23:59:46 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/07/31 12:34:13 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,21 @@ int	minishell_pwd(void)
 	}
 	printf("%s\n", cwd);
 	free(cwd);
+	return (0);
+}
+
+int	minishell_cd(char **split, t_mshell_data *data)
+{
+	int	status;
+	if (!split[1])
+		status = chdir(ft_getenv("HOME", data->env));
+	else
+		status = chdir(split[1]);
+	if (status == -1)
+	{
+		perror("chdir");
+		return (1);
+	}
 	return (0);
 }
 

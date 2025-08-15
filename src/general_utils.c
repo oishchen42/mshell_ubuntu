@@ -3,92 +3,114 @@
 /*                                                        :::      ::::::::   */
 /*   general_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oishchen <oishchen@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 15:41:03 by oishchen          #+#    #+#             */
-/*   Updated: 2025/08/08 00:02:07 by oishchen         ###   ########.fr       */
+/*   Updated: 2025/07/31 20:06:45 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	find_env(char *keyvalue, char **env)
+/*
+@brief realocates the data->env while using data->env_len;
+ALSO used at the beginning of the main to copy the envp to data->env
+	@param data - a general struct which hold all environment variables(ev) and ev length;
+	@param envp - almost always NULL except at the beginning of the main;
+*/
+
+int	find_env(char *keyvalue, t_mshell_data *data, int separator)
 {
 	size_t	i;
-	int		key_len;
+	char	*key;
 	char	*key_end;
 
-	if (!keyvalue || !env)
+	key_end = ft_strchr(keyvalue, separator);
+	if (key_end[0] != separator)
 		return (-1);
-	key_end = ft_strnstr(keyvalue, "+=", ft_strlen(keyvalue));
-	if (key_end)
-		key_len = key_end - keyvalue;
-	else
-	{
-		key_end = ft_strchr(keyvalue, '=');
-		if (!key_end)
-			return (-1);
-		key_len = key_end - keyvalue;
-	}
-	i = find_env_by_key(keyvalue, env, key_len);
-	return (i);
-}
-
-int	find_env_by_key(char *key, char **env, int key_len)
-{
-	size_t	i;
-
+	key = ft_substr(keyvalue, 0, key_end - keyvalue);
 	if (!key)
 		return (-1);
 	i = 0;
-	while (env[i])
+	while (data->env[i] && i < data->env_len)
 	{
-		if (ft_strncmp(env[i], key, key_len) == 0 && env[i][key_len] == '=')
-			return (i);
+		if (ft_strncmp(data->env[i], key, ft_strlen(key) + 1) == '=')
+			return (free(key), i);
 		i++;
 	}
+	free(key);
 	return (i);
 }
 
-char	**ft_realloc(char **env, size_t *buffer_size)
+t_mshell_data	*ft_realloc(t_mshell_data *data, char **envp)
 {
 	char	**new_env;
-	size_t	new_buffer_size;
 	size_t	i;
+	size_t	new_env_len;
 
-	new_buffer_size = *buffer_size * 2 + 1;
-	new_env = malloc(sizeof(char *) * new_buffer_size);
+	new_env_len = (data->max_env_len * 2) + 1;
+	new_env = malloc(sizeof(char *) * new_env_len);
 	if (!new_env)
 		return (NULL);
-	i = 0;
-	while (i < *buffer_size)
+	i = -1;
+	while (++i != data->max_env_len)
 	{
-		new_env[i] = env[i];
-		i++;
+		new_env[i] = ft_strdup(envp[i]);
+		if (!new_env[i])
+			return (ft_putstr_fd("Error: realloc was crushed", 2), free_split(new_env), NULL);
 	}
-	while (i < *buffer_size)
-	{
-		new_env[i] = NULL;
-		i++;
-	}
-	free(env);
-	*buffer_size = new_buffer_size;
-	return (new_env);
+	data->env_len = i;
+	data->max_env_len = new_env_len;
+	if (data->env)
+		free_split(data->env);
+	data->env = new_env;
+	data->env[data->max_env_len - 1] = NULL;
+	return (data);
 }
 
-int	is_valid_key(char *key_value, int is_export)
+int	init_data_env(t_mshell_data *data, char **envp)
 {
 	int	i;
 
 	i = 0;
-	if (!is_var_start_char(key_value[i]))
+	while (envp[i])
+		i++;
+	data->env = NULL;
+	data->max_env_len = i;
+	data->env_len = i;
+	data = ft_realloc(data, envp);
+	if (data)
+	{
+		data->status = 1;
+		return (EXIT_SUCCESS);
+	}
+	data->status = 0;
+	return (EXIT_FAILURE);
+}
+
+int	is_valid_key(char *key_value, int separator)
+{
+	int	i;
+
+	i = 0;
+	(void )separator;
+	if (!ft_isalpha(key_value[i]) && key_value[i] != '_')
 		return (0);
 	i++;
-	while (key_value[i] && is_var_body_char(key_value[i]))
+	while (key_value[i] && (ft_isalnum(key_value[i]) || key_value[i] == '_'))
 		i++;
-	if (key_value[i] == '\0')
-		return (1);
-	if (is_export && (key_value[i] == '=' || ft_strncmp(&key_value[i], "+=", 2) == 0))
+	if (key_value[i] == '=' || key_value[i] == '\0')
 		return (1);
 	return (0);
+}
+
+void	free_env(t_mshell_data *data)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < data->env_len)
+		free(data->env[i++]);
+	if (data->env)
+		free(data->env);
 }

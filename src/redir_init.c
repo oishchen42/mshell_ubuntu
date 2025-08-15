@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 21:22:57 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/08/01 23:28:52 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/25 10:08:18 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,6 @@ void	free_redir_content(void *content)
 		return ;
 	redir = (t_redir *)content;
 	free(redir->filename);
-	if (redir->heredoc_delimiter)
-		free(redir->heredoc_delimiter);
 	free(redir);
 }
 

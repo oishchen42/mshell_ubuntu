@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 23:43:39 by zirael            #+#    #+#             */
-/*   Updated: 2025/08/04 17:24:05 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/07/31 20:15:15 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,16 @@ static int	expand_one_variable(const char *str, char **envp,
 				t_buffer *buffer, size_t *j);
 static int	ensure_buffer_capacity(t_buffer *buffer, size_t needed);
 static int	get_exit_code(int exit_code, t_buffer *result, size_t *j);
+
+static int	is_var_start_char(int c) 
+{
+	return (ft_isalpha(c) || c == '_');
+}
+
+static int	is_var_body_char(int c)
+{
+	return (ft_isalnum(c) || c == '_');
+}
 
 char	*expand_variables(const char *str, t_mshell_data *data)
 {
