@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 13:43:18 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/27 14:57:11 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/08/13 14:14:33 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,22 +39,21 @@ int	check_quote_balance(const char *input)
 	return (state == QUOTE_NONE);
 }
 
-int	skip_whitespace(const char *input, int i, int len)
+int	has_forbidden_chars(const char *input)
 {
-	while (i < len && (input[i] == ' ' || input[i] == '\t'))
-		i++;
-	return (i);
-}
+	char			c;
+	t_quote_state	state;
 
-void	free_tokens(t_token *tokens)
-{
-	int	i;
-
-	i = 0;
-	while (tokens[i].content)
+	if (!input)
+		return (1);
+	state = QUOTE_NONE;
+	while (*input)
 	{
-		free(tokens[i].content);
-		i++;
+		c = *input;
+		update_quote_state(c, &state);
+		if (state == QUOTE_NONE && ft_strchr("\\;~", c))
+			return (1);
+		input++;
 	}
-	free(tokens);
+	return (0);
 }

@@ -6,13 +6,12 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 12:47:52 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/31 19:25:45 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/08/14 16:36:48 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCT_H
 # define STRUCT_H
-
 
 # include "libft.h"
 
@@ -36,17 +35,18 @@ typedef enum redir_type
 typedef struct s_token
 {
 	char	*content;
-	int		quote_state;
 	int		redir_type;
 	int		is_pipe;
-	int		ends_with_space;
+	int		has_quotes;
 }	t_token;
 
 typedef struct s_redir
 {
 	t_redir_type	type;
+	int				is_last_redir;
 	char			*filename;
 	char			*heredoc_delimiter;
+	int				has_quotes;
 }	t_redir;
 
 typedef struct s_command
@@ -58,6 +58,7 @@ typedef struct s_command
 typedef struct s_buffer
 {
 	char	*str;
+	size_t	curr_pos;
 	size_t	size;
 }	t_buffer;
 
@@ -71,5 +72,12 @@ typedef struct s_mshell_data
 	int			status;
 	int			exit_code;
 }	t_mshell_data;
+
+typedef struct s_heredoc_fd
+{
+	int		fd;
+	int		is_heredoc;
+	char	*filename;
+}	t_heredoc_fd;
 
 #endif

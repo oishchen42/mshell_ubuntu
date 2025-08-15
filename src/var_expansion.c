@@ -6,76 +6,92 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 23:43:39 by zirael            #+#    #+#             */
-/*   Updated: 2025/07/31 20:15:15 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/08/14 17:31:39 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	expand_one_variable(const char *str, char **envp,
-				t_buffer *buffer, size_t *j);
+static int	handle_expansion(const char *str, t_mshell_data *data,
+				t_buffer *result, t_quote_state quote_state);
+static int	expand_single_variable(const char *str, char **envp,
+				t_buffer *buffer);
+static int	expand_exit_code(int exit_code, t_buffer *result);
 static int	ensure_buffer_capacity(t_buffer *buffer, size_t needed);
-static int	get_exit_code(int exit_code, t_buffer *result, size_t *j);
-
-static int	is_var_start_char(int c) 
-{
-	return (ft_isalpha(c) || c == '_');
-}
-
-static int	is_var_body_char(int c)
-{
-	return (ft_isalnum(c) || c == '_');
-}
 
 char	*expand_variables(const char *str, t_mshell_data *data)
 {
-	t_buffer	result;
-	int			i;
-	size_t		j;
+	t_buffer		result;
+	int				i;
+	int				chars_copied;
+	t_quote_state	quote_state;
 
 	result.size = ft_strlen(str) * 4;
-	result.str = malloc(result.size + 1);
+	result.str = ft_calloc(result.size + 1, sizeof(char));
 	if (!result.str)
 		return (NULL);
+	result.curr_pos = 0;
 	i = 0;
-	j = 0;
+	quote_state = QUOTE_NONE;
 	while (str[i])
 	{
-		if (str[i] == '$' && str[i + 1] && is_var_start_char(str[i + 1]))
-			i += expand_one_variable(&str[i], data->env, &result, &j);
-		else if (str[i] == '$' && str[i + 1] == '?')
-			i += get_exit_code(data->exit_code, &result, &j);
-		else
+		update_quote_state(str[i], &quote_state);
+		chars_copied = handle_expansion(&str[i], data, &result, quote_state);
+		if (chars_copied == 0)
 		{
-			if (!ensure_buffer_capacity(&result, j + 1))
-				return (NULL);
-			result.str[j++] = str[i++];
+			ft_putendl_fd("expand_vars: memory allocation failed", 2);
+			return (result.str);
 		}
+		i += chars_copied;
 	}
-	result.str[j] = '\0';
+	result.str[result.curr_pos] = '\0';
 	return (result.str);
 }
 
-static int	get_exit_code(int exit_code, t_buffer *result, size_t *j)
+static int	handle_expansion(const char *str, t_mshell_data *data,
+				t_buffer *result, t_quote_state quote_state)
 {
-	char 	*status_str;
+	int	i;
+
+	i = 0;
+	if (quote_state != QUOTE_SINGLE
+		&& str[i] == '$' && str[i + 1] && is_var_start_char(str[i + 1]))
+		return (expand_single_variable(str, data->env, result));
+	if (quote_state != QUOTE_SINGLE && str[i] == '$' && str[i + 1] == '?')
+		return (expand_exit_code(data->exit_code, result));
+	if (quote_state == QUOTE_NONE && str[i] == '$' && (str[i + 1] == '"'
+			|| str[i + 1] == '\''))
+		return (1);
+	else
+	{
+		if (!ensure_buffer_capacity(result, result->curr_pos + 1))
+			return (0);
+		result->str[result->curr_pos++] = str[i];
+		return (1);
+	}
+	return (0);
+}
+
+static int	expand_exit_code(int exit_code, t_buffer *result)
+{
+	char	*status_str;
 	int		var_len;
 
 	status_str = ft_itoa(exit_code);
 	var_len = ft_strlen(status_str);
-	if (!ensure_buffer_capacity(result, *j + var_len))
+	if (!ensure_buffer_capacity(result, result->curr_pos + var_len))
 	{
 		free(status_str);
-		return (-1);
+		return (0);
 	}
-    ft_strlcpy(result->str + *j, status_str, var_len + 1);
+	ft_strlcpy(result->str + result->curr_pos, status_str, var_len + 1);
 	free(status_str);
-	*j += var_len;
+	result->curr_pos += var_len;
 	return (2);
 }
 
-static int	expand_one_variable(const char *str, char **envp,
-				t_buffer *result, size_t *j)
+static int	expand_single_variable(const char *str, char **envp,
+				t_buffer *result)
 {
 	char	*var_name;
 	char	*var_value;
@@ -87,42 +103,21 @@ static int	expand_one_variable(const char *str, char **envp,
 		end++;
 	var_name = ft_substr(str, 1, end - 1);
 	if (!var_name)
-		return (-1);
+		return (0);
 	var_value = ft_getenv(var_name, envp);
 	if (var_value)
 	{
 		var_len = ft_strlen(var_value);
-		if (!ensure_buffer_capacity(result, *j + var_len))
+		if (!ensure_buffer_capacity(result, result->curr_pos + var_len))
 		{
 			free(var_name);
-			return (-1);
+			return (0);
 		}
-		ft_strlcpy(result->str + *j, var_value, var_len + 1);
-		*j += var_len;
+		ft_strlcpy(result->str + result->curr_pos, var_value, var_len + 1);
+		result->curr_pos += var_len;
 	}
 	free(var_name);
 	return (end);
-}
-
-char	*ft_getenv(const char *name, char **envp)
-{
-	int		i;
-	int		name_len;
-	char	*env_entry;
-
-	if (!name || !envp)
-		return (NULL);
-	name_len = ft_strlen(name);
-	i = 0;
-	while (envp[i])
-	{
-		env_entry = envp[i];
-		if (ft_strncmp(env_entry, name, name_len) == 0
-			&& env_entry[name_len] == '=')
-			return (env_entry + name_len + 1);
-		i++;
-	}
-	return (NULL);
 }
 
 static int	ensure_buffer_capacity(t_buffer *buffer, size_t needed)

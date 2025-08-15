@@ -6,25 +6,45 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:42:03 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/30 21:40:24 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/08/11 13:36:50 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <fcntl.h>
+#include <sys/stat.h>
 
-static void	save_std_fds(int *saved_stdin, int *saved_stdout)
+static int	save_std_fds(int *saved_stdin, int *saved_stdout)
 {
 	*saved_stdin = dup(STDIN_FILENO);
 	*saved_stdout = dup(STDOUT_FILENO);
+	
+	if (*saved_stdin == -1 || *saved_stdout == -1)
+	{
+		perror("minishell: dup");
+		if (*saved_stdin != -1)
+			close(*saved_stdin);
+		if (*saved_stdout != -1)
+			close(*saved_stdout);
+		return (-1);
+	}
+	return (0);
 }
 
 static void	restore_std_fds(int saved_stdin, int saved_stdout)
 {
-	dup2(saved_stdin, STDIN_FILENO);
-	dup2(saved_stdout, STDOUT_FILENO);
-	close(saved_stdin);
-	close(saved_stdout);
+	if (saved_stdin != -1)
+	{
+		if (dup2(saved_stdin, STDIN_FILENO) == -1)
+			perror("minishell: dup2 stdin");
+		close(saved_stdin);
+	}
+	if (saved_stdout != -1)
+	{
+		if (dup2(saved_stdout, STDOUT_FILENO) == -1)
+			perror("minishell: dup2 stdout");
+		close(saved_stdout);
+	}
 }
 
 int	run_cmds(t_mshell_data *mshell_struct)
@@ -44,8 +64,13 @@ int	run_cmds(t_mshell_data *mshell_struct)
 		return (EXIT_SUCCESS);
 	if (n_cmds == 1 && is_builtin(mshell_struct->commands[0]))
 	{
-		save_std_fds(&saved_stdin, &saved_stdout);
-		handle_redirections(mshell_struct->commands[0].redirections);
+		if (save_std_fds(&saved_stdin, &saved_stdout) == -1)
+			return (EXIT_FAILURE);
+		if (handle_redirections(mshell_struct->commands[0].redirections, mshell_struct) == -1)
+		{
+			restore_std_fds(saved_stdin, saved_stdout);
+			return (EXIT_FAILURE);
+		}
 		builtin_status = parse_builtin(mshell_struct->commands[0], mshell_struct);
 		restore_std_fds(saved_stdin, saved_stdout);
 		return (builtin_status);
@@ -99,15 +124,30 @@ int	run_cmds(t_mshell_data *mshell_struct)
 	return (status);
 }
 
+// check if path is a valid directory, exclude . and .. dirs
+int is_directory(const char *path)
+{
+    struct stat	statbuf;
+
+	if (stat(path, &statbuf) != 0)
+		return (0);
+	if (ft_strncmp(path, ".", 2) == 0 || ft_strncmp(path, "..", 3) == 0)
+		return (0);
+    return S_ISDIR(statbuf.st_mode);
+}
+
 void	run_single_cmd(t_command command, t_mshell_data *mshell_struct)
 {
 	char	*cmd;
 	int		err_code;
 	int		builtin_status;
 
-	handle_redirections(command.redirections);
+	if (handle_redirections(command.redirections, mshell_struct) == -1)
+		exit (1);
 	if (!command.args || !command.args[0])
 		exit(0);
+	if ((*command.args)[0] == '\0')
+		exit_with_error_and_free("command not found", NULL, 127);
 	builtin_status = parse_builtin(command, mshell_struct);
 	if (builtin_status != CMD_NOT_FOUND)
 		exit(builtin_status);
@@ -117,11 +157,16 @@ void	run_single_cmd(t_command command, t_mshell_data *mshell_struct)
 		free(cmd);
 		exit_with_error_and_free("permission denied", NULL, 126);
 	}
+	if (cmd && is_directory(cmd))
+	{
+		free(cmd);
+		exit_with_error_and_free("is a directory", NULL, 126);
+	}
 	if (cmd == NULL && err_code == ERROR_NO_FILE)
 		exit_with_error_and_free(strerror(errno), NULL, 127);
 	if (cmd == NULL)
 		exit_with_error_and_free("command not found", NULL, 127);
 	execve(cmd, command.args, mshell_struct->env);
 	free(cmd);
-	exit_with_error("execve error", NULL, 126);
+	exit_with_error("execve error", NULL, 127);
 }

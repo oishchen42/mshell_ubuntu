@@ -1,37 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   clean_utils.c                                      :+:      :+:    :+:   */
+/*   history_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/11 17:38:33 by oishchen          #+#    #+#             */
-/*   Updated: 2025/08/13 15:01:38 by nmikuka          ###   ########.fr       */
+/*   Created: 2025/07/16 16:44:39 by nmikuka           #+#    #+#             */
+/*   Updated: 2025/08/11 23:44:08 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+int	ft_isspace(char c);
 
-void	free_split(char	**split)
+int	should_add_to_history(const char *line)
 {
-	int	i;
-
-	if (!split)
-		return ;
-	i = 0;
-	while (split[i])
-		free(split[i++]);
-	free(split);
+	if (!line)
+		return (0);
+	while (*line)
+	{
+		if (!ft_isspace((unsigned char)*line))
+			return (1);
+		line++;
+	}
+	return (0);
 }
 
-
-void	free_env(t_mshell_data *data)
+int	ft_isspace(char c)
 {
-	size_t	i;
-
-	i = 0;
-	while (i < data->env_len)
-		free(data->env[i++]);
-	if (data->env)
-		free(data->env);
+	return (c == ' ' || c == '\t' /*|| c == '\n'
+		|| c == '\v' || c == '\f' || c == '\r'*/);
 }

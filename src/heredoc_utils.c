@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:45:05 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/29 10:46:18 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/08/13 20:01:17 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,25 +16,38 @@ static char	*ft_getline(void);
 static char	*read_line(char *buffer, size_t buffer_size);
 static char	*free_buffer(char *buffer);
 
-void	handle_heredoc(char *heredoc_name, const char *delimiter)
+void	handle_heredoc(char *heredoc_name, const char *delimiter, t_mshell_data *data, int should_expand)
 {
 	int		fd;
 	char	*next_line;
+	char	*line_expanded;
 
 	fd = open(heredoc_name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd < 0)
 		exit_with_error("Error creating heredoc file", NULL, EXIT_FAILURE);
 	while (1)
 	{
-		write(STDOUT_FILENO, "> ", 2);
+		// write(STDOUT_FILENO, "> ", 2);
 		next_line = ft_getline();
 		if (!next_line)
 			break ;
 		if (ft_strncmp(next_line, delimiter, ft_strlen(delimiter)) == 0
 			&& next_line[ft_strlen(delimiter)] == '\n')
 			break ;
-		write(fd, next_line, ft_strlen(next_line));
-		free(next_line);
+		if  (should_expand)
+		{
+			line_expanded = expand_variables(next_line, data);
+			free(next_line);
+			if (!line_expanded)
+			{
+				close(fd);
+				return;
+			}
+		}
+		else 
+			line_expanded = next_line;
+		write(fd, line_expanded, ft_strlen(line_expanded));
+		free(line_expanded);
 	}
 	if (next_line)
 		free(next_line);

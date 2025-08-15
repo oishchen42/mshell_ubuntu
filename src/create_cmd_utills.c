@@ -6,7 +6,7 @@
 /*   By: nmikuka <nmikuka@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 00:02:35 by nmikuka           #+#    #+#             */
-/*   Updated: 2025/07/31 19:26:35 by nmikuka          ###   ########.fr       */
+/*   Updated: 2025/08/11 19:09:18 by nmikuka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	free_command(t_command *cmd);
 void	free_commands(t_command *commands, int n_cmds);
-
 /**
  * Counts tokens until next pipe or end
  */
@@ -28,6 +27,31 @@ int	count_tokens_until_pipe(t_token *tokens, int start)
 	return (i - start);
 }
 
+void	suppress_quotes(char *str, int *has_quotes)
+{
+	int	i;
+	int	j;
+	t_quote_state quote_state;
+	char c;
+
+	i = 0;
+	j = 0;
+	quote_state = QUOTE_NONE;
+	*has_quotes = 0;
+	while (str[i])
+	{
+		c = str[i];
+		if (update_quote_state(c, &quote_state))
+		{
+			*has_quotes = 1;
+			i++;
+			continue;
+		}
+		str[j++] = str[i++];
+	}
+	str[j] = '\0';
+}
+
 /**
  * Creates a command array from tokens (until pipe or end)
  */
@@ -37,12 +61,19 @@ t_command	create_command_from_tokens(t_token *tokens, int start, t_mshell_data *
 	int			i;
 	int			arg_index;
 	int			token_count;
-	char		*str;
-
+	// char		*path;
+	
 	cmd.args = NULL;
+	if (tokens[start].is_pipe)
+	{
+		ft_putendl_fd("minishell: syntax error near unexpected token `|'", 2);
+		data->exit_code = 2;
+		return (cmd);
+	}
 	token_count = count_tokens_until_pipe(tokens, start);
 	if (token_count == 0)
 		return (cmd);
+
 	cmd.args = malloc(sizeof(char *) * (token_count + 1));
 	ft_bzero(cmd.args, sizeof(char *) * (token_count + 1));
 	cmd.redirections = NULL;
@@ -57,42 +88,26 @@ t_command	create_command_from_tokens(t_token *tokens, int start, t_mshell_data *
 	{
 		if (tokens[i].redir_type != REDIR_NONE)
 		{
-			add_redirection(&(cmd.redirections), tokens, i);
+			if (add_redirection(&(cmd.redirections), tokens, i, tokens[i + 1].content))
+			{
+				ft_lstclear(&(cmd).redirections, free_redir_content);
+				free_command(&cmd);
+				ft_putendl_fd("minishell: create command: syntax error", 2);
+				data->exit_code = 2;
+				return (cmd);
+			}
 			i += 2;
 			continue ;
 		}
-		if (tokens[i].quote_state == QUOTE_NONE && (ft_strncmp(tokens[i].content, "~", 2) == 0
-				|| ft_strncmp(tokens[i].content, "~/", 2) == 0))
-			str = ft_strjoin(ft_getenv("HOME", data->env), &(tokens[i].content)[1]);
-		else if (tokens[i].quote_state != QUOTE_SINGLE && ft_strchr(tokens[i].content, '$'))
-		{
-			str = expand_variables(tokens[i].content, data);
-			if (str && !tokens[i].ends_with_space && tokens[i + 1].content) //suppress last dollar sign if there is next token without space
-			{
-				int len = ft_strlen(str);
-				if (str[len - 1] == '$')
-					str[len - 1] = '\0';
-			}
-		}
-		else
-			str = ft_strdup(tokens[i].content);
-		if (cmd.args[arg_index])
-		{
-
-			cmd.args[arg_index] = ft_strjoin(cmd.args[arg_index], str);
-			free(str);
-		}	
-		else
-			cmd.args[arg_index] = str;
+		cmd.args[arg_index] = ft_strdup(tokens[i].content);
 		if (!cmd.args[arg_index])
 		{
-			perror("minishell: strdup");
+			ft_lstclear(&(cmd).redirections, free_redir_content);
 			free_command(&cmd);
 			return (cmd);
 		}
-		if (tokens[i].ends_with_space || !tokens[i + 1].content)
-			arg_index++;
 		i++;
+		arg_index++;
 	}
 	cmd.args[arg_index] = NULL;
 	return (cmd);
@@ -182,6 +197,8 @@ void	free_commands(t_command *cmds, int n_cmds)
 	i = 0;
 	while (i < n_cmds)
 	{
+		// print_redirections(cmds[i].redirections);
+		ft_lstclear(&(cmds[i]).redirections, free_redir_content);
 		free_command(&cmds[i]);
 		i++;
 	}
